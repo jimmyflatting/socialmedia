@@ -9,20 +9,20 @@ router.use((req, res, next) => {
 	next();
 });
 
-/* FETCH 50 USERS */
+/* FETCH 50 POSTS */
 router.get('/', async (req, res) => {
 	const db = mongoose.connection.db;
-	let collection = await db.collection('users');
+	let collection = await db.collection('posts');
 	let results = await collection.find({}).limit(50).toArray();
 
 	res.send(results).status(200);
 });
 
-/* REGISTER NEW USER */
+/* CREATE NEW POST */
 router.post('/', async (req, res) => {
 	try {
 		const db = mongoose.connection.db;
-		const collection = await db.collection('users');
+		const collection = await db.collection('posts');
 
 		const newDocument = {
 			...req.body,
@@ -36,19 +36,16 @@ router.post('/', async (req, res) => {
 	}
 });
 
-/* UPDATE CURRENT USER */
-router.put('/settings/:id', async (req, res) => {
+/* UPDATE CURRENT POST */
+router.put('/post/:id', async (req, res) => {
 	try {
 		const db = mongoose.connection.db;
-		const collection = db.collection('users');
+		const collection = db.collection('posts');
 		const query = { _id: new ObjectId(req.params.id) };
 		const item = {
-			firstName: req.body.firstName,
-			lastName: req.body.lastName,
-			email: req.body.email,
-			password: req.body.password,
-			userHandle: req.body.userHandle,
-			userPicture: req.body.userPicture,
+			author: req.body.author,
+			body: req.body.body,
+			postPicture: req.body.postPicture,
 		};
 
 		const result = await collection.updateOne(query, { $set: item });
@@ -64,24 +61,5 @@ router.put('/settings/:id', async (req, res) => {
 	}
 });
 
-/* FETCH SINGLE USER (OBJECTID) */
-router.get('/:id', async (req, res) => {
-	try {
-		const db = mongoose.connection.db;
-		const collection = await db.collection('users');
-		const query = { _id: new ObjectId(req.params.id) };
-		const result = await collection.findOne(query);
-
-		if (!result) {
-			res.status(404).send('User not found');
-		} else {
-			res.status(200).send(result);
-		}
-	} catch (error) {
-		console.error(error);
-		res.status(500).send('Internal Server Error');
-	}
-});
-
-/* EXPORT USER ROUTES */
+/* EXPORT POSTS ROUTES */
 module.exports = router;
