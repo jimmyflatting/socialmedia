@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Card, Stack, Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const NewPost = () => {
 	const [message, setMessage] = useState('');
@@ -62,7 +63,7 @@ const NewPost = () => {
 				<Box sx={{ p: 2 }}>
 					<TextField
 						id='outlined-multiline-static'
-						label='Skapa ny post'
+						label="What's on your mind?"
 						multiline
 						rows={6}
 						value={message}
@@ -83,7 +84,7 @@ const NewPost = () => {
 								variant='contained'
 								component='label'
 								sx={{ mr: 2 }}>
-								Upload File
+								<AttachFileIcon />
 								<input
 									type='file'
 									hidden
@@ -95,16 +96,7 @@ const NewPost = () => {
 						<Button
 							variant='outlined'
 							type='submit'>
-							<label
-								htmlFor='post-input'
-								component='span'>
-								Skapa post <SendIcon sx={{ ml: 1 }} />
-							</label>
-							<input
-								type='submit'
-								id='post-input'
-								style={{ display: 'none' }}
-							/>
+							Create post <SendIcon sx={{ ml: 1 }} />
 						</Button>
 					</Stack>
 				</Box>

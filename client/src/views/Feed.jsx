@@ -11,13 +11,13 @@ const Feed = () => {
 			<Header />
 			<div className='container'>
 				<div className='row'>
-					<div className='col-3'>
+					<div className='col-12 col-xl-3'>
 						<ProfileComponent />
 					</div>
-					<div className='col-6'>
+					<div className='col-12 col-xl-6'>
 						<FeedComponent />
 					</div>
-					<div className='col-3'>
+					<div className='col-3 d-none d-xl-block'>
 						<FriendList />
 					</div>
 				</div>

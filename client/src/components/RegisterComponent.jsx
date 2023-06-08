@@ -98,8 +98,15 @@ const RegisterComponent = () => {
 								bgcolor: 'background.',
 								display: 'flex',
 							}}>
-							<div className='form-row'>
-								<div className='col mb-2'>
+							<Stack
+								direction='row'
+								alignItems='center'
+								justifyContent='space-between'
+								sx={{
+									bgcolor: 'background.',
+									display: 'flex',
+								}}>
+								<div className='col my-1 mx-1'>
 									<input
 										className='form-control'
 										value={firstName}
@@ -109,7 +116,7 @@ const RegisterComponent = () => {
 										type='text'
 									/>
 								</div>
-								<div className='col mb-2'>
+								<div className='col my-1 mx-1'>
 									<input
 										className='form-control'
 										value={lastName}
@@ -119,9 +126,16 @@ const RegisterComponent = () => {
 										type='text'
 									/>
 								</div>
-							</div>
-							<div className='form-row'>
-								<div className='col mb-2'>
+							</Stack>
+							<Stack
+								direction='row'
+								alignItems='center'
+								justifyContent='space-between'
+								sx={{
+									bgcolor: 'background.',
+									display: 'flex',
+								}}>
+								<div className='col my-1 mx-1'>
 									<input
 										className='form-control'
 										value={userHandle}
@@ -131,7 +145,7 @@ const RegisterComponent = () => {
 										type='text'
 									/>
 								</div>
-								<div className='col mb-2'>
+								<div className='col my-1 mx-1'>
 									<input
 										className='form-control'
 										value={email}
@@ -141,9 +155,16 @@ const RegisterComponent = () => {
 										type='Email'
 									/>
 								</div>
-							</div>
-							<div className='form-row'>
-								<div className='col mb-2'>
+							</Stack>
+							<Stack
+								direction='row'
+								alignItems='center'
+								justifyContent='space-between'
+								sx={{
+									bgcolor: 'background.',
+									display: 'flex',
+								}}>
+								<div className='col my-1 mx-1'>
 									<input
 										className='form-control'
 										value={password}
@@ -153,7 +174,7 @@ const RegisterComponent = () => {
 										type='password'
 									/>
 								</div>
-								<div className='col mb-2'>
+								<div className='col my-1 mx-1'>
 									<input
 										className='form-control'
 										value={passwordCheck}
@@ -165,7 +186,7 @@ const RegisterComponent = () => {
 										type='password'
 									/>
 								</div>
-							</div>
+							</Stack>
 
 							<Typography
 								id='pwerrorspan'

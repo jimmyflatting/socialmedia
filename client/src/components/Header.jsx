@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Nav, Navbar } from 'react-bootstrap';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Header = () => {
 	return (
@@ -14,28 +16,22 @@ const Header = () => {
 							<h4 className='m-0'>SocialMedia</h4>
 						</Navbar.Brand>
 					</Link>
-					<Navbar.Toggle aria-controls='basic-navbar-nav' />
-					<Navbar.Collapse
+					<Navbar
 						id='basic-navbar-nav'
 						className='justify-content-end'>
 						<Nav className=''>
 							<Link
 								href='#'
 								className='nav-link'>
-								123
+								<SettingsIcon />
 							</Link>
 							<Link
 								href='#'
 								className='nav-link'>
-								123
-							</Link>
-							<Link
-								href='#'
-								className='nav-link'>
-								123
+								<LogoutIcon />
 							</Link>
 						</Nav>
-					</Navbar.Collapse>
+					</Navbar>
 				</Container>
 			</Navbar>
 		</header>

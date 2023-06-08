@@ -8,7 +8,9 @@ import { grey } from '@mui/material/colors';
 const ProfileComponent = () => {
 	return (
 		<>
-			<Card elevation={4}>
+			<Card
+				elevation={4}
+				className='mb-3'>
 				<Box sx={{ p: 2, display: 'flex' }}>
 					<Link to='/'>
 						<Avatar
