@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NewPost from './NewPost';
-import {
-	Card,
-	Box,
-	Avatar,
-	Stack,
-	Typography,
-	IconButton,
-	Divider,
-} from '@mui/material';
-import { LocationOn, Edit } from '@mui/icons-material';
+import { Card, Box, Avatar, Stack, Typography, Divider } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import placeholder from '../img/feed.png';
 
 const FeedComponent = () => {
 	const [posts, setPosts] = useState([]);
@@ -38,7 +28,7 @@ const FeedComponent = () => {
 		<>
 			{/* NEW POST */}
 			<NewPost />
-			{/* POST 1 */}
+			{/* POSTS LOOP */}
 			{posts.map((post, index) => (
 				<Card
 					className='mb-3'
@@ -79,7 +69,7 @@ const FeedComponent = () => {
 						</Typography>
 						{post.postPicture ? (
 							<img
-								src={placeholder}
+								src={post.postPicture}
 								alt='post'
 								className='img-fluid my-4'
 							/>

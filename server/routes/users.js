@@ -24,13 +24,26 @@ router.post('/', async (req, res) => {
 		const db = mongoose.connection.db;
 		const collection = await db.collection('users');
 
+		const email = req.body.email;
+		const userHandle = req.body.userHandle;
+
+		// Check if the email or userHandle is already in use
+		const existingUser = await collection.findOne({
+			$or: [{ email }, { userHandle }],
+		});
+		if (existingUser) {
+			return res
+				.status(400)
+				.json({ error: 'Email or userHandle is already in use' });
+		}
+
 		const newDocument = {
 			...req.body,
 			date: new Date(),
 		};
 
 		const result = await collection.insertOne(newDocument);
-		res.status(204).send(result);
+		res.sendStatus(204);
 	} catch (error) {
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
