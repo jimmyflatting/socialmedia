@@ -89,6 +89,7 @@ const NewPost = () => {
 									type='file'
 									hidden
 									onChange={handleFileChange}
+									accept='image/*'
 								/>
 							</Button>
 							{fileName && <span>{fileName}</span>}
