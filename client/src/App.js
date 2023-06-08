@@ -5,22 +5,34 @@ import Register from './views/Register';
 import Profile from './views/Profile';
 
 function App() {
+	const getSession = () => {
+		// Your logic to check session and return a boolean value
+	};
+
 	return (
 		<>
 			<div className='root'>
 				<Routes>
 					<Route
 						path='/'
-						element={<Feed />}></Route>
+						element={getSession() ? <Feed /> : <Login />}
+					/>
+					<Route
+						path='/feed'
+						element={<Feed />}
+					/>
 					<Route
 						path='/signup'
-						element={<Register />}></Route>
+						element={<Register />}
+					/>
 					<Route
 						path='/login'
-						element={<Login />}></Route>
+						element={<Login />}
+					/>
 					<Route
 						path='/profile/:id'
-						element={<Profile />}></Route>
+						element={<Profile />}
+					/>
 				</Routes>
 			</div>
 		</>
