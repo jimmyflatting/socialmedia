@@ -3,7 +3,6 @@ import FeedComponent from '../components/FeedComponent';
 import ProfileComponent from '../components/ProfileComponent';
 import FriendList from '../components/FriendList';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
 
 const Feed = () => {
 	return (

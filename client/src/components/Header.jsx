@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import SettingsIcon from '@mui/icons-material/Settings';
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutComponent from './LogoutComponent';
+import SettingsComponent from './SettingsComponent';
 
 const Header = () => {
 	return (
@@ -20,16 +20,8 @@ const Header = () => {
 						id='basic-navbar-nav'
 						className='justify-content-end'>
 						<Nav className=''>
-							<Link
-								href='#'
-								className='nav-link'>
-								<SettingsIcon />
-							</Link>
-							<Link
-								href='#'
-								className='nav-link'>
-								<LogoutIcon />
-							</Link>
+							<SettingsComponent />
+							<LogoutComponent />
 						</Nav>
 					</Navbar>
 				</Container>
