@@ -31,6 +31,8 @@ const LoginComponent = () => {
 				});
 				const data = await response.json();
 				console.log(data);
+				document.cookie = `token=${data.token}; path=/;`;
+				window.location.href = '/';
 			} catch (error) {
 				console.log(error);
 			}

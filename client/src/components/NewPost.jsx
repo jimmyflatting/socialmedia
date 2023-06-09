@@ -46,6 +46,7 @@ const NewPost = () => {
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify(postData),
+					Authorization: `Bearer ${getToken()}`,
 				});
 				const data = await response.json();
 				console.log(data);

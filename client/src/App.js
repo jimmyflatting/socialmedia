@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Login from './views/Login';
 import Feed from './views/Feed';
@@ -5,9 +6,28 @@ import Register from './views/Register';
 import Profile from './views/Profile';
 
 function App() {
-	const getSession = () => {
-		// Your logic to check session and return a boolean value
-	};
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	useEffect(() => {
+		const getSession = async () => {
+			try {
+				const response = await fetch(
+					'http://localhost:3001/check-session',
+					{
+						method: 'GET',
+						credentials: 'include',
+					}
+				);
+				if (response.ok) {
+					setIsLoggedIn(true);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		getSession();
+	}, []);
 
 	return (
 		<>
@@ -15,7 +35,7 @@ function App() {
 				<Routes>
 					<Route
 						path='/'
-						element={getSession() ? <Feed /> : <Login />}
+						element={isLoggedIn ? <Feed /> : <Login />}
 					/>
 					<Route
 						path='/feed'

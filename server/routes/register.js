@@ -56,5 +56,5 @@ router.post('/', async (req, res) => {
 	}
 });
 
-/* EXPORT POSTS ROUTES */
+/* EXPORT ROUTE */
 module.exports = router;

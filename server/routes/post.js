@@ -1,7 +1,8 @@
 const express = require('express');
-const S3 = require('@aws-sdk/client-s3');
 const router = express.Router();
+const S3 = require('@aws-sdk/client-s3');
 const Post = require('../model/post');
+const mongoose = require('mongoose');
 
 // Create post
 router.post('/create', async (req, res) => {
@@ -23,16 +24,22 @@ router.post('/create', async (req, res) => {
 		// create post
 		const post = await Post.create({
 			content,
-			imgSrcS3,
-			author,
 		});
 
-		// return new user
+		// return post
 		res.status(201).json(post);
 	} catch (err) {
 		console.log(err);
 	}
 });
 
-/* EXPORT POSTS ROUTES */
+router.get('/', async (req, res) => {
+	const db = mongoose.connection.db;
+	let collection = await db.collection('posts');
+	let results = await collection.find({}).limit(50).toArray();
+
+	res.send(results).status(200);
+});
+
+/* EXPORT ROUTE */
 module.exports = router;

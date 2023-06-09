@@ -32,6 +32,7 @@ router.post('/', async (req, res) => {
 			user.token = token;
 
 			// user
+			res.cookie('token', token, { httpOnly: true });
 			res.status(200).json(user);
 		}
 		res.status(400).json('Invalid Credentials');
@@ -40,5 +41,5 @@ router.post('/', async (req, res) => {
 	}
 });
 
-/* EXPORT POSTS ROUTES */
+/* EXPORT ROUTE */
 module.exports = router;
