@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Box, Stack, Button, Typography } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -8,6 +8,85 @@ const SettingsComponent = () => {
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
+	const [userHandle, setUserHandle] = useState('');
+	const [password, setPassword] = useState('');
+	const [passwordCheck, setPasswordCheck] = useState('');
+
+	const handleInputChangeFirstName = (e) => {
+		setFirstName(e.target.value);
+	};
+	const handleInputChangeLastName = (e) => {
+		setLastName(e.target.value);
+	};
+	const handleInputChangeEmail = (e) => {
+		setEmail(e.target.value);
+	};
+	const handleInputChangeUserHandle = (e) => {
+		setUserHandle(e.target.value);
+	};
+	const handleInputChangePassword = (e) => {
+		setPassword(e.target.value);
+	};
+	const handleInputChangePasswordCheck = (e) => {
+		setPasswordCheck(e.target.value);
+	};
+
+	const saveSettings = () => {
+		const saveBtn = document.getElementById('saveBtn');
+
+		const fetchData = async () => {
+			if (passwordCheck === password) {
+				saveBtn.innerHTML = 'Saving...';
+				try {
+					const response = await fetch(
+						'http://localhost:3001/kalle/',
+						{
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(postData),
+						}
+					);
+
+					if (!response.ok) {
+						throw new Error('Failed to create user');
+					}
+
+					const data = await response.json();
+					console.log(data);
+					saveBtn.innerHTML = '✓';
+					setOpen(false);
+				} catch (error) {
+					console.log(error);
+					saveBtn.innerHTML = 'Something went wrong...';
+				}
+			} else {
+				saveBtn.innerHTML = 'Passwords do not match...';
+				console.log('Passwords do not match');
+			}
+		};
+
+		const postData = {
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			userHandle: userHandle,
+			password: password,
+			posts: [],
+		};
+
+		try {
+			fetchData();
+		} catch (error) {
+			console.log(error);
+			saveBtn.innerHTML = 'Something went wrong...';
+		}
+	};
+
 	return (
 		<>
 			<button
@@ -64,6 +143,8 @@ const SettingsComponent = () => {
 									type='text'
 									className='form-control'
 									placeholder='First name'
+									value={firstName}
+									onChange={handleInputChangeFirstName}
 								/>
 							</div>
 							<div className='mx-2'></div>
@@ -72,6 +153,8 @@ const SettingsComponent = () => {
 									type='text'
 									className='form-control'
 									placeholder='Last name'
+									value={lastName}
+									onChange={handleInputChangeLastName}
 								/>
 							</div>
 						</Stack>
@@ -88,6 +171,8 @@ const SettingsComponent = () => {
 									type='email'
 									className='form-control'
 									placeholder='Email'
+									value={email}
+									onChange={handleInputChangeEmail}
 								/>
 							</div>
 							<div className='mx-2'></div>
@@ -95,7 +180,9 @@ const SettingsComponent = () => {
 								<input
 									type='text'
 									className='form-control'
-									placeholder='Username'
+									placeholder='Display name'
+									value={userHandle}
+									onChange={handleInputChangeUserHandle}
 								/>
 							</div>
 						</Stack>
@@ -112,6 +199,8 @@ const SettingsComponent = () => {
 									type='password'
 									className='form-control'
 									placeholder='Password'
+									value={password}
+									onChange={handleInputChangePassword}
 								/>
 							</div>
 							<div className='mx-2'></div>
@@ -120,6 +209,8 @@ const SettingsComponent = () => {
 									type='password'
 									className='form-control'
 									placeholder='Password (again)'
+									value={passwordCheck}
+									onChange={handleInputChangePasswordCheck}
 								/>
 							</div>
 						</Stack>
@@ -135,9 +226,11 @@ const SettingsComponent = () => {
 								display: 'flex',
 							}}>
 							<Button
+								id='saveBtn'
 								variant='contained'
 								type='submit'
-								sx={{ mt: 2, cursor: 'pointer' }}>
+								sx={{ mt: 2, cursor: 'pointer' }}
+								onClick={saveSettings}>
 								Save
 							</Button>
 						</Stack>

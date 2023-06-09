@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { Card, Stack, Button, Divider, Typography } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
+import { Card, Stack, Button, Typography } from '@mui/material';
 import { grey, red } from '@mui/material/colors';
 
 const RegisterComponent = () => {
@@ -39,7 +38,7 @@ const RegisterComponent = () => {
 			if (passwordCheck === password) {
 				try {
 					const response = await fetch(
-						'http://localhost:3001/users/',
+						'http://localhost:3001/register/',
 						{
 							method: 'POST',
 							headers: {
@@ -72,7 +71,6 @@ const RegisterComponent = () => {
 			email: email,
 			userHandle: userHandle,
 			password: password,
-			posts: [],
 		};
 
 		try {
@@ -138,21 +136,21 @@ const RegisterComponent = () => {
 								<div className='col my-1 mx-1'>
 									<input
 										className='form-control'
-										value={userHandle}
-										onChange={handleInputChangeUserHandle}
-										placeholder='Display name'
-										required
-										type='text'
-									/>
-								</div>
-								<div className='col my-1 mx-1'>
-									<input
-										className='form-control'
 										value={email}
 										onChange={handleInputChangeEmail}
 										placeholder='Email'
 										required
 										type='Email'
+									/>
+								</div>
+								<div className='col my-1 mx-1'>
+									<input
+										className='form-control'
+										value={userHandle}
+										onChange={handleInputChangeUserHandle}
+										placeholder='Display name'
+										required
+										type='text'
 									/>
 								</div>
 							</Stack>
