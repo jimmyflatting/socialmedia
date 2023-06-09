@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Card, Stack, Button } from '@mui/material';
@@ -9,6 +9,21 @@ const NewPost = () => {
 	const [message, setMessage] = useState('');
 	const [file, setFile] = useState(null);
 	const [fileName, setFileName] = useState('');
+	const [rows, setRows] = useState(1);
+	const textArea = document.getElementById('outlined-multiline-static');
+
+	// Handle rows
+	const handleTextFieldFocus = () => {
+		setRows(6);
+		textArea.classList.remove(`transition-rows-1`);
+		textArea.classList.add(`transition-rows-6`);
+	};
+
+	const handleTextFieldBlur = () => {
+		setRows(1);
+		textArea.classList.remove(`transition-rows-6`);
+		textArea.classList.add(`transition-rows-1`);
+	};
 
 	const handleInputChange = (e) => {
 		setMessage(e.target.value);
@@ -65,9 +80,11 @@ const NewPost = () => {
 						id='outlined-multiline-static'
 						label="What's on your mind?"
 						multiline
-						rows={6}
+						rows={rows}
 						value={message}
 						onChange={handleInputChange}
+						onFocus={handleTextFieldFocus}
+						onBlur={handleTextFieldBlur}
 						variant='standard'
 						fullWidth
 					/>
