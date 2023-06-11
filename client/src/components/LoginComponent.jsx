@@ -62,20 +62,20 @@ const LoginComponent = () => {
 								bgcolor: 'background.',
 								display: 'flex',
 							}}>
-							<div class='form-row'>
-								<div class='col mb-2'>
+							<div className='form-row'>
+								<div className='col mb-2'>
 									<input
 										type='text'
-										class='form-control'
+										className='form-control'
 										placeholder='Email'
 										value={email}
 										onChange={handleInputChangeEmail}
 									/>
 								</div>
-								<div class='col'>
+								<div className='col'>
 									<input
 										type='password'
-										class='form-control'
+										className='form-control'
 										placeholder='Password'
 										value={password}
 										onChange={handleInputChangePassword}

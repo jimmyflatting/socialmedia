@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Card, Stack, Button } from '@mui/material';
@@ -6,13 +6,18 @@ import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const NewPost = () => {
+
+	const getToken = () => {
+		const token = localStorage.getItem('token');
+		return token;
+	  };
+	  
 	const [message, setMessage] = useState('');
 	const [file, setFile] = useState(null);
 	const [fileName, setFileName] = useState('');
 	const [rows, setRows] = useState(1);
 	const textArea = document.getElementById('outlined-multiline-static');
 
-	// Handle rows
 	const handleTextFieldFocus = () => {
 		setRows(6);
 		textArea.classList.remove(`transition-rows-1`);
@@ -44,9 +49,10 @@ const NewPost = () => {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
+						Authorization: `Bearer ${getToken()}`,
 					},
 					body: JSON.stringify(postData),
-					Authorization: `Bearer ${getToken()}`,
+					
 				});
 				const data = await response.json();
 				console.log(data);
@@ -63,7 +69,7 @@ const NewPost = () => {
 
 		console.log('Sending data:', postData);
 
-		fetchData(); // Call the fetchData function to make the POST request
+		fetchData();
 
 		// Reset the form
 		setMessage('');
