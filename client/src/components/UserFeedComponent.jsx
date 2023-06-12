@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import NewPost from './NewPost';
 import { Card, Box, Avatar, Stack, Typography, Divider } from '@mui/material';
 import { grey } from '@mui/material/colors';
@@ -14,7 +15,7 @@ const UserFeedComponent = () => {
 				const url = `http://localhost:3001/posts/${userHandle}`;
 				const response = await fetch(url);
 				const postsData = await response.json();
-				console.log(postsData);
+				// console.log(postsData);
 
 				setPosts(postsData);
 			} catch (error) {
@@ -46,17 +47,19 @@ const UserFeedComponent = () => {
 							<Typography
 								sx={{ px: 1 }}
 								fontWeight={700}>
-								{post.author && post.author.firstName
-									? `${post.author.firstName} ${post.author.lastName}`
-									: ''}
+								<Link to={`/profile/${post.author.userHandle}`}>
+									{post.author && post.author.firstName
+										? `${post.author.firstName} ${post.author.lastName}`
+										: ''}
+								</Link>
 							</Typography>
 							<Typography
 								className='profileHandle'
 								sx={{ px: 1, color: grey[500] }}
 								fontSize={14}
 								fontWeight={200}>
-								{post.authorData && post.authorData.userHandle
-									? `@${post.authorData.userHandle}`
+								{post.author && post.author.userHandle
+									? `@${post.author.userHandle}`
 									: ''}
 							</Typography>
 						</Stack>
@@ -72,7 +75,7 @@ const UserFeedComponent = () => {
 							color='text.primary'>
 							{post.content}
 						</Typography>
-						{post.imgSrc ? (
+						{post.imgSrc && post.imgSrc !== 'null' ? (
 							<img
 								src={post.imgSrc}
 								alt='post'

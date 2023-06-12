@@ -52,8 +52,7 @@ const RegisterComponent = () => {
 						throw new Error('Failed to create user');
 					}
 
-					const data = await response.json();
-					console.log(data);
+					window.location.href = '/';
 				} catch (error) {
 					console.log(error);
 				}
@@ -74,10 +73,9 @@ const RegisterComponent = () => {
 		};
 
 		try {
-			await fetchData(); // Call the fetchData function to make the POST request
+			await fetchData();
 		} catch (error) {
 			console.log(error);
-			// Handle the error here, e.g., display an error message to the user
 		}
 	};
 

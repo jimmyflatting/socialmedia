@@ -1,34 +1,58 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const upload = multer();
-
 const Post = require('../model/post');
 const User = require('../model/user');
+const upload = require('../middleware/upload');
+const { Readable } = require('stream');
+const AWS = require('aws-sdk');
+
+const s3Client = new AWS.S3({
+	region: process.env.S3_region,
+	credentials: {
+		accessKeyId: process.env.S3_accessKeyId,
+		secretAccessKey: process.env.S3_secretAccessKey,
+	},
+});
 
 // Create post
-router.post('/create', upload.none(), async (req, res) => {
+router.post('/create', upload.single('imgSrc'), async (req, res) => {
 	try {
-		const { content, authorId, imgSrc } = req.body;
+		const { content, authorId } = req.body;
 
 		if (!content || !authorId) {
 			res.status(400).send('Content and author are required');
-		} else {
-			const user = await User.findOne({ email: authorId });
-
-			if (!user) {
-				res.status(400).send('Invalid author email');
-				return;
-			}
-
-			const post = await Post.create({
-				content,
-				author: user._id,
-				imgSrc,
-			});
-
-			res.status(201).json(post);
+			return;
 		}
+
+		const user = await User.findOne({ email: authorId });
+
+		if (!user) {
+			res.status(400).send('Invalid author email');
+			return;
+		}
+
+		const fileStream = Readable.from(req.file.buffer);
+
+		// Upload the file to S3
+		const s3Params = {
+			Bucket: process.env.S3_bucketName,
+			Key: `${Date.now()}-${req.file.originalname}`,
+			Body: fileStream,
+		};
+
+		const s3UploadResponse = await s3Client.upload(s3Params).promise();
+		const imgSrc = s3UploadResponse.Location;
+
+		const post = await Post.create({
+			content,
+			author: user._id,
+			imgSrc,
+		});
+
+		user.posts.push(post._id);
+		await user.save();
+
+		res.status(201).json(post);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ message: 'Server error', error: error });

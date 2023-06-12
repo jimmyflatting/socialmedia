@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import NewPost from './NewPost';
 import { Card, Box, Avatar, Stack, Typography, Divider } from '@mui/material';
 import { grey } from '@mui/material/colors';
@@ -11,7 +12,7 @@ const FeedComponent = () => {
 			try {
 				const response = await fetch('http://localhost:3001/posts/');
 				const postsData = await response.json();
-				// console.log(postsData);
+				//console.log(postsData);
 
 				setPosts(postsData);
 			} catch (error) {
@@ -37,15 +38,21 @@ const FeedComponent = () => {
 							variant='rounded'
 							width='64px'
 							sx={{ width: 64, height: 64 }}
-							src=''
+							src={
+								post.author && post.author.firstName
+									? `${post.author.firstName} ${post.author.lastName}`
+									: ''
+							}
 						/>
 						<Stack spacing={0.5}>
 							<Typography
 								sx={{ px: 1 }}
 								fontWeight={700}>
-								{post.author && post.author.firstName
-									? `${post.author.firstName} ${post.author.lastName}`
-									: ''}
+								<Link to={`/profile/${post.author.userHandle}`}>
+									{post.author && post.author.firstName
+										? `${post.author.firstName} ${post.author.lastName}`
+										: ''}
+								</Link>
 							</Typography>
 							<Typography
 								className='profileHandle'
