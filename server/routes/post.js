@@ -35,7 +35,26 @@ router.post('/create', upload.none(), async (req, res) => {
 	}
 });
 
-// Fetch post by postId
+// Fetch posts by user handle
+router.get('/:userHandle', async (req, res) => {
+	try {
+		const userHandle = req.params.userHandle;
+		const user = await User.findOne({ userHandle });
+
+		if (!user) {
+			res.status(404).json({ message: 'User not found' });
+			return;
+		}
+
+		const posts = await Post.find({ author: user._id }).populate('author');
+		res.status(200).json(posts);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Server error', error: error });
+	}
+});
+
+// Fetch post by Id
 router.get('/:postId', async (req, res) => {
 	try {
 		const postId = req.params.postId;

@@ -2,46 +2,28 @@ import React, { useState, useEffect } from 'react';
 import NewPost from './NewPost';
 import { Card, Box, Avatar, Stack, Typography, Divider } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { useParams } from 'react-router-dom';
 
 const UserFeedComponent = () => {
 	const [posts, setPosts] = useState([]);
-
-	const { userHandle } = useParams();
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const userHandle = window.location.pathname.split('/').pop();
-				const url = `http://localhost:3001/users/profile/${userHandle}`;
+
+				const url = `http://localhost:3001/posts/${userHandle}`;
 				const response = await fetch(url);
-				const userData = await response.json();
-				const postsData = userData.posts;
+				const postsData = await response.json();
 				console.log(postsData);
 
-				const fetchPost = async (postId) => {
-					const postUrl = `http://localhost:3001/posts/${postId}`;
-					const postResponse = await fetch(postUrl);
-					const postData = await postResponse.json();
-					console.log(postData);
-					return postData;
-				};
-
-				const fetchAllPosts = async () => {
-					const fetchedPosts = await Promise.all(
-						postsData.map((postId) => fetchPost(postId))
-					);
-					setPosts(fetchedPosts);
-				};
-
-				fetchAllPosts();
+				setPosts(postsData);
 			} catch (error) {
 				console.log(error);
 			}
 		};
 
 		fetchData();
-	}, [userHandle]);
+	}, []);
 
 	return (
 		<>
@@ -58,20 +40,24 @@ const UserFeedComponent = () => {
 							variant='rounded'
 							width='64px'
 							sx={{ width: 64, height: 64 }}
-							src={post.profileImage}
+							src=''
 						/>
 						<Stack spacing={0.5}>
 							<Typography
 								sx={{ px: 1 }}
 								fontWeight={700}>
-								{`${post.firstName} ${post.lastName}`}
+								{post.author && post.author.firstName
+									? `${post.author.firstName} ${post.author.lastName}`
+									: ''}
 							</Typography>
 							<Typography
 								className='profileHandle'
 								sx={{ px: 1, color: grey[500] }}
 								fontSize={14}
 								fontWeight={200}>
-								{`@${post.userHandle}`}
+								{post.authorData && post.authorData.userHandle
+									? `@${post.authorData.userHandle}`
+									: ''}
 							</Typography>
 						</Stack>
 					</Box>
