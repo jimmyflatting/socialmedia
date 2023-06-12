@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { Card, Stack, Button, Divider, Typography } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
+import { Card, Stack, Button, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
 const LoginComponent = () => {
@@ -32,6 +30,9 @@ const LoginComponent = () => {
 				const data = await response.json();
 				console.log(data);
 				document.cookie = `token=${data.token}; path=/;`;
+				localStorage.setItem('token', data.token);
+				const emailCookie = { email: email };
+				localStorage.setItem('email', emailCookie.email);
 				window.location.href = '/';
 			} catch (error) {
 				console.log(error);

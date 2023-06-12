@@ -1,45 +1,68 @@
 const express = require('express');
 const router = express.Router();
-const S3 = require('@aws-sdk/client-s3');
+const multer = require('multer');
+const upload = multer();
+
 const Post = require('../model/post');
-const mongoose = require('mongoose');
+const User = require('../model/user');
 
 // Create post
-router.post('/create', async (req, res) => {
+router.post('/create', upload.none(), async (req, res) => {
 	try {
-		// get user input
-		const { content, author, imgSrc } = req.body;
+		const { content, authorId, imgSrc } = req.body;
 
-		// validate user input
-		if (!(content === '')) {
-			res.status(400).send('All input is required');
+		if (!content || !authorId) {
+			res.status(400).send('Content and author are required');
+		} else {
+			const user = await User.findOne({ email: authorId });
+
+			if (!user) {
+				res.status(400).send('Invalid author email');
+				return;
+			}
+
+			const post = await Post.create({
+				content,
+				author: user._id,
+				imgSrc,
+			});
+
+			res.status(201).json(post);
 		}
-
-		// Upload imgSrc to S3
-		const S3Func = () => {
-			const imgSrcS3 = '';
-			return imgSrcS3;
-		};
-
-		// create post
-		const post = await Post.create({
-			content,
-		});
-
-		// return post
-		res.status(201).json(post);
-	} catch (err) {
-		console.log(err);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Server error', error: error });
 	}
 });
 
-router.get('/', async (req, res) => {
-	const db = mongoose.connection.db;
-	let collection = await db.collection('posts');
-	let results = await collection.find({}).limit(50).toArray();
+// Fetch post by postId
+router.get('/:postId', async (req, res) => {
+	try {
+		const postId = req.params.postId;
+		const post = await Post.findById(postId).populate('author');
 
-	res.send(results).status(200);
+		if (post) {
+			res.status(200).json(post);
+		} else {
+			res.status(404).json({
+				message: 'Post not found',
+			});
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Server error', error: error });
+	}
 });
 
-/* EXPORT ROUTE */
+// Fetch all posts
+router.get('/', async (req, res) => {
+	try {
+		const posts = await Post.find().limit(50).populate('author');
+		res.status(200).json(posts);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Server error', error: error });
+	}
+});
+
 module.exports = router;

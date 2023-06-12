@@ -6,12 +6,11 @@ import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const NewPost = () => {
-
 	const getToken = () => {
 		const token = localStorage.getItem('token');
 		return token;
-	  };
-	  
+	};
+
 	const [message, setMessage] = useState('');
 	const [file, setFile] = useState(null);
 	const [fileName, setFileName] = useState('');
@@ -40,36 +39,34 @@ const NewPost = () => {
 		setFileName(selectedFile ? selectedFile.name : '');
 	};
 
-	const handleSubmit = (e) => {
+	const getEmail = () => {
+		const email = localStorage.getItem('email');
+		// console.log(email);
+		return email;
+	};
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		const fetchData = async () => {
-			try {
-				const response = await fetch('http://localhost:3001/posts/', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${getToken()}`,
-					},
-					body: JSON.stringify(postData),
-					
-				});
-				const data = await response.json();
-				console.log(data);
-			} catch (error) {
-				console.log(error);
-			}
-		};
+		const formData = new FormData();
+		formData.append('content', message);
+		formData.append('authorId', getEmail());
+		formData.append('imgSrc', file);
 
-		const postData = {
-			author: 'John Doe',
-			body: message,
-			postPicture: file,
-		};
-
-		console.log('Sending data:', postData);
-
-		fetchData();
+		try {
+			const response = await fetch('http://localhost:3001/posts/create', {
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${getToken()}`,
+				},
+				body: formData,
+			});
+			console.log('Response status:', response.status);
+			const data = await response.text();
+			console.log('Response data:', data);
+		} catch (error) {
+			console.log(error);
+		}
 
 		// Reset the form
 		setMessage('');

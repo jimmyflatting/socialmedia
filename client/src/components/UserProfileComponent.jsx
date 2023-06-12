@@ -5,41 +5,24 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WorkIcon from '@mui/icons-material/Work';
 import { grey } from '@mui/material/colors';
 
-const ProfileComponent = () => {
-	const [userData, setUserData] = useState(null);
-
-	const getToken = () => {
-		const token = localStorage.getItem('token');
-		// console.log(token);
-		return token;
-	};
-	const getEmail = () => {
-		const email = localStorage.getItem('email');
-		// console.log(email);
-		return email;
-	};
+const UserProfileComponent = () => {
+	const [userData, setProfile] = useState([]);
 
 	useEffect(() => {
-		const fetchUserData = async () => {
+		const fetchData = async () => {
+			const userHandle = window.location.pathname.split('/').pop();
+
 			try {
-				const response = await fetch(
-					'http://localhost:3001/users/profile/',
-					{
-						headers: {
-							Authorization: `Bearer ${getToken()}`,
-							Profile: `${getEmail()}`,
-						},
-					}
-				);
-				const data = await response.json();
-				// console.log(data);
-				setUserData(data);
+				const url = `http://localhost:3001/users/profile/${userHandle}`;
+				const response = await fetch(url);
+				const userData = await response.json();
+				setProfile(userData);
 			} catch (error) {
 				console.log(error);
 			}
 		};
 
-		fetchUserData();
+		fetchData();
 	}, []);
 
 	if (!userData) {
@@ -52,7 +35,7 @@ const ProfileComponent = () => {
 				elevation={4}
 				className='mb-3'>
 				<Box sx={{ p: 2, display: 'flex' }}>
-					<Link to={`/profile/${userData.userHandle}`}>
+					<Link to='/'>
 						<Avatar
 							variant='rounded'
 							width='64px'
@@ -61,13 +44,13 @@ const ProfileComponent = () => {
 						/>
 					</Link>
 					<Stack spacing={0.5}>
-						<Link to={`/profile/${userData.userHandle}`}>
-							<Typography
-								sx={{ px: 1 }}
-								fontWeight={700}>
+						<Typography
+							sx={{ px: 1 }}
+							fontWeight={700}>
+							<Link to={`/profile/${userData.userHandle}`}>
 								{userData.firstName} {userData.lastName}
-							</Typography>
-						</Link>
+							</Link>
+						</Typography>
 						<Typography
 							className='profileHandle'
 							sx={{ px: 1, color: grey[500] }}
@@ -105,4 +88,4 @@ const ProfileComponent = () => {
 	);
 };
 
-export default ProfileComponent;
+export default UserProfileComponent;
