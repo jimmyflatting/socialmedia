@@ -32,6 +32,66 @@ router.get('/profile/:author', async (req, res) => {
 	}
 });
 
+router.put('/profile/update/:author', async (req, res) => {
+	try {
+		const userHandle = req.params.author;
+
+		// Retrieve the updated user data from the request body
+		const {
+			firstName,
+			lastName,
+			email,
+			userHandle: newHandle,
+			password,
+			location,
+			workplace,
+		} = req.body;
+
+		// Find the user in the database based on the userHandle
+		const user = await User.findOne({ userHandle: userHandle });
+
+		if (!user) {
+			return res.status(404).json({ message: 'User not found' });
+		}
+
+		// Update the user's profile fields individually if they are provided
+		if (firstName) {
+			user.firstName = firstName;
+		}
+		if (lastName) {
+			user.lastName = lastName;
+		}
+		if (email) {
+			user.email = email;
+		}
+		if (newHandle) {
+			user.userHandle = newHandle;
+		}
+		if (password) {
+			user.password = password;
+		}
+		if (location) {
+			user.location = location;
+		}
+		if (workplace) {
+			user.workplace = workplace;
+		}
+
+		// Save the updated user
+		await user.save();
+
+		res.status(200).json({
+			firstName: user.firstName,
+			lastName: user.lastName,
+			email: user.email,
+			userHandle: user.userHandle,
+		});
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Server error', error: error });
+	}
+});
+
 router.get('/profile', async (req, res) => {
 	try {
 		const db = mongoose.connection.db;
@@ -43,10 +103,13 @@ router.get('/profile', async (req, res) => {
 
 		if (user) {
 			res.status(200).json({
+				profileImg: user.profileImg,
 				firstName: user.firstName,
 				lastName: user.lastName,
 				email: user.email,
 				userHandle: user.userHandle,
+				location: user.location,
+				workplace: user.workplace,
 			});
 		} else {
 			res.status(404).json({ message: 'User not found', email: email });

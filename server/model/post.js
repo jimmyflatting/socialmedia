@@ -4,6 +4,7 @@ const postSchema = new mongoose.Schema({
 	content: { type: String },
 	imgSrc: { type: String },
 	author: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+	createdAt: { type: Date, default: Date.now },
 });
 
 postSchema.methods.addToUserPosts = async function (userID) {

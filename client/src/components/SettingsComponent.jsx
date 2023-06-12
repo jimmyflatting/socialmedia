@@ -4,7 +4,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Modal from '@mui/material/Modal';
 
-const SettingsComponent = () => {
+const SettingsComponent = ({ userHandleData }) => {
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
@@ -14,7 +14,15 @@ const SettingsComponent = () => {
 	const [userHandle, setUserHandle] = useState('');
 	const [password, setPassword] = useState('');
 	const [passwordCheck, setPasswordCheck] = useState('');
+	const [workplace, setWorkplace] = useState('');
+	const [location, setLocation] = useState('');
 
+	const handleInputChangeWorkplace = (e) => {
+		setWorkplace(e.target.value);
+	};
+	const handleInputChangeLocation = (e) => {
+		setLocation(e.target.value);
+	};
 	const handleInputChangeFirstName = (e) => {
 		setFirstName(e.target.value);
 	};
@@ -34,56 +42,46 @@ const SettingsComponent = () => {
 		setPasswordCheck(e.target.value);
 	};
 
-	const saveSettings = () => {
+	const saveSettings = async () => {
 		const saveBtn = document.getElementById('saveBtn');
 
-		const fetchData = async () => {
-			if (passwordCheck === password) {
-				saveBtn.innerHTML = 'Saving...';
-				try {
-					const response = await fetch(
-						'http://localhost:3001/kalle/',
-						{
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(postData),
-						}
-					);
+		if (passwordCheck === password) {
+			saveBtn.innerHTML = 'Saving...';
+			try {
+				const payload = {
+					...(firstName && { firstName }),
+					...(lastName && { lastName }),
+					...(email && { email }),
+					...(workplace && { workplace }),
+					...(location && { location }),
+				};
 
-					if (!response.ok) {
-						throw new Error('Failed to create user');
+				const response = await fetch(
+					`http://localhost:3001/users/profile/update/${userHandleData}`,
+					{
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(payload),
 					}
+				);
 
-					const data = await response.json();
-					console.log(data);
-					saveBtn.innerHTML = '✓';
-					setOpen(false);
-				} catch (error) {
-					console.log(error);
-					saveBtn.innerHTML = 'Something went wrong...';
+				if (!response.ok) {
+					throw new Error('Failed to update user profile');
 				}
-			} else {
-				saveBtn.innerHTML = 'Passwords do not match...';
-				console.log('Passwords do not match');
+
+				const data = await response.json();
+				console.log(data);
+				saveBtn.innerHTML = '✓';
+				setOpen(false);
+			} catch (error) {
+				console.log(error);
+				saveBtn.innerHTML = 'Something went wrong...';
 			}
-		};
-
-		const postData = {
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			userHandle: userHandle,
-			password: password,
-			posts: [],
-		};
-
-		try {
-			fetchData();
-		} catch (error) {
-			console.log(error);
-			saveBtn.innerHTML = 'Something went wrong...';
+		} else {
+			saveBtn.innerHTML = 'Passwords do not match...';
+			console.log('Passwords do not match');
 		}
 	};
 
@@ -155,6 +153,34 @@ const SettingsComponent = () => {
 									placeholder='Last name'
 									value={lastName}
 									onChange={handleInputChangeLastName}
+								/>
+							</div>
+						</Stack>
+						<Stack
+							direction='row'
+							alignItems='center'
+							justifyContent='space-between'
+							sx={{
+								bgcolor: 'background.',
+								display: 'flex',
+							}}>
+							<div className='col mb-2'>
+								<input
+									type='text'
+									className='form-control'
+									placeholder='Workplace'
+									value={workplace}
+									onChange={handleInputChangeWorkplace}
+								/>
+							</div>
+							<div className='mx-2'></div>
+							<div className='col mb-2'>
+								<input
+									type='text'
+									className='form-control'
+									placeholder='Location'
+									value={location}
+									onChange={handleInputChangeLocation}
 								/>
 							</div>
 						</Stack>

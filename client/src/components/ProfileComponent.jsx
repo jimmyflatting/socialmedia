@@ -10,7 +10,7 @@ const ProfileComponent = () => {
 
 	const getToken = () => {
 		const token = localStorage.getItem('token');
-		// console.log(token);
+		//console.log(token);
 		return token;
 	};
 	const getEmail = () => {
@@ -32,7 +32,7 @@ const ProfileComponent = () => {
 					}
 				);
 				const data = await response.json();
-				// console.log(data);
+				//console.log(data);
 				setUserData(data);
 			} catch (error) {
 				console.log(error);
@@ -57,7 +57,7 @@ const ProfileComponent = () => {
 							variant='rounded'
 							width='64px'
 							sx={{ width: 64, height: 64 }}
-							src={userData.avatar}
+							src={userData.profileImg}
 						/>
 					</Link>
 					<Stack spacing={0.5}>
@@ -91,13 +91,13 @@ const ProfileComponent = () => {
 						variant='body2'
 						color='text.secondary'>
 						<LocationOnIcon sx={{ color: grey[500] }} />{' '}
-						{userData.userLocation}
+						{userData.location}
 					</Typography>
 					<Typography
 						variant='body2'
 						color='text.secondary'>
 						<WorkIcon sx={{ color: grey[500] }} />{' '}
-						{userData.userCompany}
+						{userData.workplace}
 					</Typography>
 				</Stack>
 			</Card>

@@ -12,7 +12,7 @@ const FeedComponent = () => {
 			try {
 				const response = await fetch('http://localhost:3001/posts/');
 				const postsData = await response.json();
-				//console.log(postsData);
+				// console.log(postsData);
 
 				setPosts(postsData);
 			} catch (error) {

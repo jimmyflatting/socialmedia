@@ -4,7 +4,7 @@ import { Container, Nav, Navbar } from 'react-bootstrap';
 import LogoutComponent from './LogoutComponent';
 import SettingsComponent from './SettingsComponent';
 
-const Header = () => {
+const Header = ({ userHandle }) => {
 	return (
 		<header className=''>
 			<Navbar expand='lg'>
@@ -20,7 +20,7 @@ const Header = () => {
 						id='basic-navbar-nav'
 						className='justify-content-end'>
 						<Nav className=''>
-							<SettingsComponent />
+							<SettingsComponent userHandleData={userHandle} />
 							<LogoutComponent />
 						</Nav>
 					</Navbar>
