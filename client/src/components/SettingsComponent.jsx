@@ -5,7 +5,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Modal from '@mui/material/Modal';
 
 const SettingsComponent = ({ userHandleData }) => {
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 	const [firstName, setFirstName] = useState('');
@@ -16,6 +16,7 @@ const SettingsComponent = ({ userHandleData }) => {
 	const [passwordCheck, setPasswordCheck] = useState('');
 	const [workplace, setWorkplace] = useState('');
 	const [location, setLocation] = useState('');
+	const [image, setImage] = useState(null);
 
 	const handleInputChangeWorkplace = (e) => {
 		setWorkplace(e.target.value);
@@ -41,6 +42,10 @@ const SettingsComponent = ({ userHandleData }) => {
 	const handleInputChangePasswordCheck = (e) => {
 		setPasswordCheck(e.target.value);
 	};
+	const handleFileChange = (e) => {
+		const file = e.target.files[0];
+		setImage(file);
+	};
 
 	const saveSettings = async () => {
 		const saveBtn = document.getElementById('saveBtn');
@@ -48,22 +53,21 @@ const SettingsComponent = ({ userHandleData }) => {
 		if (passwordCheck === password) {
 			saveBtn.innerHTML = 'Saving...';
 			try {
-				const payload = {
-					...(firstName && { firstName }),
-					...(lastName && { lastName }),
-					...(email && { email }),
-					...(workplace && { workplace }),
-					...(location && { location }),
-				};
+				const formData = new FormData();
+				formData.append('firstName', firstName);
+				formData.append('lastName', lastName);
+				formData.append('email', email);
+				formData.append('userHandle', userHandle);
+				formData.append('password', password);
+				formData.append('workplace', workplace);
+				formData.append('location', location);
+				formData.append('profileImage', image);
 
 				const response = await fetch(
 					`http://localhost:3001/users/profile/update/${userHandleData}`,
 					{
 						method: 'PUT',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(payload),
+						body: formData,
 					}
 				);
 
@@ -241,8 +245,23 @@ const SettingsComponent = ({ userHandleData }) => {
 							</div>
 						</Stack>
 
-						{/* SAVE BUTTON */}
+						{/* IMAGE UPLOADER */}
+						<Stack
+							direction='row'
+							alignItems='center'
+							justifyContent='space-between'
+							sx={{
+								bgcolor: 'background.',
+								display: 'flex',
+							}}>
+							<input
+								type='file'
+								accept='image/*'
+								onChange={handleFileChange}
+							/>
+						</Stack>
 
+						{/* SAVE BUTTON */}
 						<Stack
 							direction='row'
 							alignItems='center'

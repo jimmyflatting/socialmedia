@@ -38,11 +38,7 @@ const FeedComponent = () => {
 							variant='rounded'
 							width='64px'
 							sx={{ width: 64, height: 64 }}
-							src={
-								post.author && post.author.firstName
-									? `${post.author.firstName} ${post.author.lastName}`
-									: ''
-							}
+							src={post.author.profileImg}
 						/>
 						<Stack spacing={0.5}>
 							<Typography

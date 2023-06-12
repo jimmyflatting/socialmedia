@@ -41,7 +41,7 @@ const UserFeedComponent = () => {
 							variant='rounded'
 							width='64px'
 							sx={{ width: 64, height: 64 }}
-							src=''
+							src={post.author.profileImg}
 						/>
 						<Stack spacing={0.5}>
 							<Typography
