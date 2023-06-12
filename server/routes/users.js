@@ -9,7 +9,7 @@ router.get('/profile/:author', async (req, res) => {
 		const db = mongoose.connection.db;
 		const userHandle = req.params.author;
 		let collection = db.collection('users');
-		const user = await collection.findOne({ userHandle: userHandle }); // Match based on email address
+		const user = await collection.findOne({ userHandle: userHandle });
 
 		console.log(user);
 
@@ -24,7 +24,6 @@ router.get('/profile/:author', async (req, res) => {
 		} else {
 			res.status(404).json({
 				message: 'User not found',
-				// author: authorEmail,
 			});
 		}
 	} catch (error) {

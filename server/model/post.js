@@ -8,16 +8,10 @@ const postSchema = new mongoose.Schema({
 
 postSchema.methods.addToUserPosts = async function (userID) {
 	try {
-		// Find the user with the given userID
 		const user = await mongoose.model('user').findById(userID);
-
-		// Add the postID to the user's post array
 		user.posts.push(this._id);
-
-		// Save the user
 		await user.save();
 	} catch (error) {
-		// Handle error
 		console.error(error);
 	}
 };

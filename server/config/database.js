@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const MONGO_DB = process.env.MONGO_DB;
 
 exports.connect = () => {
-	// Connecting to the database
 	mongoose
 		.connect(MONGO_DB, {
 			useNewUrlParser: true,
