@@ -34,7 +34,7 @@ const FriendList = () => {
 			try {
 				const response = await fetch('http://localhost:3001/users/');
 				const data = await response.json();
-				console.log(data);
+				//console.log(data);
 
 				setUsers(data);
 			} catch (error) {
