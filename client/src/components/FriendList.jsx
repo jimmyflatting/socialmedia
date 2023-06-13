@@ -48,7 +48,7 @@ const FriendList = ({ user, token }) => {
 		const profile = followingProfiles[index];
 		try {
 			const response = await fetch(
-				`http://localhost:3001/users/profile/update/${profile.userHandle}`,
+				`http://localhost:3001/profile/friends/${user.userHandle}`,
 				{
 					method: 'PUT',
 					headers: {
@@ -76,7 +76,7 @@ const FriendList = ({ user, token }) => {
 		const profile = followingProfiles[index];
 		try {
 			const response = await fetch(
-				`http://localhost:3001/users/profile/update/${profile.userHandle}`,
+				`http://localhost:3001/profile/friends/${user.userHandle}`,
 				{
 					method: 'PUT',
 					headers: {
@@ -103,8 +103,8 @@ const FriendList = ({ user, token }) => {
 		const friendChecker = async () => {
 			if (
 				user &&
-				followingProfiles.some(
-					(profile) => profile.userHandle === user.userHandle
+				followingProfiles.some((profile) =>
+					user.following.includes(profile.userHandle)
 				)
 			) {
 				setIsFriend(true);
