@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Box, Stack, Button, Typography } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Modal from '@mui/material/Modal';
 
-const SettingsComponent = ({ userHandleData }) => {
+const SettingsComponent = () => {
+	const [userData, setUserData] = useState([]);
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
@@ -17,6 +18,16 @@ const SettingsComponent = ({ userHandleData }) => {
 	const [workplace, setWorkplace] = useState('');
 	const [location, setLocation] = useState('');
 	const [image, setImage] = useState(null);
+
+	const getToken = () => {
+		const token = localStorage.getItem('token');
+		return token;
+	};
+
+	const getEmail = () => {
+		const email = localStorage.getItem('email');
+		return email;
+	};
 
 	const handleInputChangeWorkplace = (e) => {
 		setWorkplace(e.target.value);
@@ -47,6 +58,29 @@ const SettingsComponent = ({ userHandleData }) => {
 		setImage(file);
 	};
 
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const response = await fetch(
+					'http://localhost:3001/users/profile/',
+					{
+						headers: {
+							Authorization: `Bearer ${getToken()}`,
+							Profile: `${getEmail()}`,
+						},
+					}
+				);
+				const data = await response.json();
+				console.log(data);
+				setUserData(data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		fetchUserData();
+	}, []);
+
 	const saveSettings = async () => {
 		const saveBtn = document.getElementById('saveBtn');
 
@@ -64,9 +98,13 @@ const SettingsComponent = ({ userHandleData }) => {
 				formData.append('profileImage', image);
 
 				const response = await fetch(
-					`http://localhost:3001/users/profile/update/${userHandleData}`,
+					`http://localhost:3001/users/profile/update/${userData.userHandle}`,
 					{
 						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${getToken()}`,
+						},
 						body: formData,
 					}
 				);

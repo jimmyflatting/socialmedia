@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Box, Typography, Avatar, Stack } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
 
 const FriendList = () => {
 	const [userData, setUserData] = useState(null);
 	const [followingProfiles, setFollowingProfiles] = useState([]);
+	const [isFriend, setIsFriend] = useState(null);
 
 	const getToken = () => {
 		const token = localStorage.getItem('token');
@@ -47,7 +48,6 @@ const FriendList = () => {
 				const data = await response.json();
 				setUserData(data);
 
-				// Fetch profiles of following users
 				if (data && data.following.length > 0) {
 					const profiles = await Promise.all(
 						data.following.map((userHandle) =>
@@ -65,6 +65,79 @@ const FriendList = () => {
 
 		fetchUserData();
 	}, []);
+
+	console.log(followingProfiles);
+
+	const handleRemoveFriend = async (e, index) => {
+		e.preventDefault();
+		const profile = followingProfiles[index];
+		try {
+			const response = await fetch(
+				`http://localhost:3001/users/profile/update/${profile.userHandle}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${getToken()}`,
+					},
+					body: JSON.stringify({
+						action: 'remove',
+						userId: profile.userHandle,
+					}),
+				}
+			);
+			if (response.ok) {
+				setIsFriend(false);
+			} else {
+				console.log('Failed to remove friend');
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleAddFriend = async (e, index) => {
+		e.preventDefault();
+		const profile = followingProfiles[index];
+		try {
+			const response = await fetch(
+				`http://localhost:3001/users/profile/update/${profile.userHandle}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${getToken()}`,
+					},
+					body: JSON.stringify({
+						action: 'add',
+						userId: profile.userHandle,
+					}),
+				}
+			);
+			if (response.ok) {
+				setIsFriend(true);
+			} else {
+				console.log('Failed to add friend');
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		const friendChecker = async () => {
+			if (
+				userData &&
+				userData.following.includes(followingProfiles.userHandle)
+			) {
+				setIsFriend(false);
+			} else {
+				setIsFriend(true);
+			}
+		};
+
+		friendChecker();
+	}, [userData, followingProfiles.userHandle]);
 
 	return (
 		<>
@@ -108,7 +181,19 @@ const FriendList = () => {
 							direction={'row'}
 							spacing={0.5}
 							justifyContent={'flex-end'}>
-							<GroupRemoveIcon />
+							{isFriend === false ? (
+								<PersonAddAlt1Icon
+									onClick={(e) => handleAddFriend(e, index)}
+									sx={{ my: 'auto', width: 48, height: 48 }}
+								/>
+							) : (
+								<PersonRemoveAlt1Icon
+									onClick={(e) =>
+										handleRemoveFriend(e, index)
+									}
+									sx={{ my: 'auto', width: 48, height: 48 }}
+								/>
+							)}
 						</Stack>
 					</Box>
 				))}

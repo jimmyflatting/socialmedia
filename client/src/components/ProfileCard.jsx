@@ -7,7 +7,6 @@ import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
 
 const ProfileCard = ({ user }) => {
 	const [isFriend, setIsFriend] = useState(null);
-
 	const [userData, setUserData] = useState(null);
 
 	const getToken = () => {
