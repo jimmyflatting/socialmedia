@@ -21,6 +21,7 @@ router.put(
 	async (req, res) => {
 		try {
 			const userHandle = req.params.author;
+			const { action, userId } = req.body;
 
 			// Retrieve the updated user data from the request body
 			const {
@@ -38,6 +39,34 @@ router.put(
 
 			if (!user) {
 				return res.status(404).json({ message: 'User not found' });
+			}
+
+			// Find the user to follow/unfollow based on the userId
+			const followUser = await User.findOne({ userHandle: userId });
+
+			if (!followUser) {
+				return res
+					.status(404)
+					.json({ message: 'User to follow/unfollow not found' });
+			}
+
+			// Add or remove user from following based on the action
+			if (action === 'add') {
+				if (!user.following.includes(userId)) {
+					user.following.push(userId);
+					followUser.followers.push(user.userHandle);
+				}
+			} else if (action === 'remove') {
+				const userIndex = user.following.indexOf(userId);
+				const followUserIndex = followUser.followers.indexOf(
+					user.userHandle
+				);
+				if (userIndex !== -1) {
+					user.following.splice(userIndex, 1);
+				}
+				if (followUserIndex !== -1) {
+					followUser.followers.splice(followUserIndex, 1);
+				}
 			}
 
 			// Update the user's profile fields individually if they are provided
@@ -83,8 +112,9 @@ router.put(
 				user.profileImg = imageUrl;
 			}
 
-			// Save the updated user
+			// Save the updated user and the user to follow/unfollow
 			await user.save();
+			await followUser.save();
 
 			res.status(200).json({
 				firstName: user.firstName,
@@ -100,14 +130,22 @@ router.put(
 	}
 );
 
-router.get('/profile/:author', async (req, res) => {
+router.get('/profile/:identifier', async (req, res) => {
 	try {
 		const db = mongoose.connection.db;
-		const userHandle = req.params.author;
-		let collection = db.collection('users');
-		const user = await collection.findOne({ userHandle: userHandle });
+		const identifier = req.params.identifier;
 
-		console.log(user);
+		let query;
+		if (mongoose.Types.ObjectId.isValid(identifier)) {
+			// If the identifier is a valid ObjectId, search by _id
+			query = { _id: new mongoose.Types.ObjectId(identifier) };
+		} else {
+			// Otherwise, search by userHandle
+			query = { userHandle: identifier };
+		}
+
+		let collection = db.collection('users');
+		const user = await collection.findOne(query);
 
 		if (user) {
 			res.status(200).json({
@@ -117,6 +155,7 @@ router.get('/profile/:author', async (req, res) => {
 				userHandle: user.userHandle,
 				posts: user.posts,
 				profileImg: user.profileImg,
+				id: user._id,
 			});
 		} else {
 			res.status(404).json({
@@ -147,6 +186,8 @@ router.get('/profile', async (req, res) => {
 				userHandle: user.userHandle,
 				location: user.location,
 				workplace: user.workplace,
+				followers: user.followers,
+				following: user.following,
 			});
 		} else {
 			res.status(404).json({ message: 'User not found', email: email });

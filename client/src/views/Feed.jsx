@@ -53,7 +53,7 @@ const Feed = () => {
 						<ProfileComponent />
 					</div>
 					<div className='col-12 col-xl-6'>
-						<FeedComponent />
+						{/* <FeedComponent /> */}
 					</div>
 					<div className='col-3 d-none d-xl-block'>
 						<FriendList />

@@ -6,43 +6,64 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 
 const FriendList = () => {
-	const [users, setUsers] = useState([]);
+	const [userData, setUserData] = useState(null);
+	const [followingProfiles, setFollowingProfiles] = useState([]);
 
 	const getToken = () => {
 		const token = localStorage.getItem('token');
 		return token;
 	};
 
-	const handleRemoveFriend = async (userId) => {
+	const getEmail = () => {
+		const email = localStorage.getItem('email');
+		return email;
+	};
+
+	const fetchUserProfile = async (userHandle) => {
 		try {
-			await fetch(`http://localhost:3001/users/${userId}/followers`, {
-				method: 'PUT',
-				headers: {
-					Authorization: `Bearer ${getToken()}`,
-				},
-			});
-			// console.log('Response status:', response.status);
-			// const data = await response.text();
-			// console.log('Response data:', data);
+			const response = await fetch(
+				`http://localhost:3001/users/profile/${userHandle}`
+			);
+			const data = await response.json();
+			return data;
 		} catch (error) {
 			console.log(error);
+			return null;
 		}
 	};
 
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetchUserData = async () => {
 			try {
-				const response = await fetch('http://localhost:3001/users/');
+				const response = await fetch(
+					'http://localhost:3001/users/profile/',
+					{
+						headers: {
+							Authorization: `Bearer ${getToken()}`,
+							Profile: `${getEmail()}`,
+						},
+					}
+				);
 				const data = await response.json();
-				//console.log(data);
+				setUserData(data);
 
-				setUsers(data);
+				// Fetch profiles of following users
+				if (data && data.following.length > 0) {
+					const profiles = await Promise.all(
+						data.following.map((userHandle) =>
+							fetchUserProfile(userHandle)
+						)
+					);
+					setFollowingProfiles(
+						profiles.filter((profile) => profile !== null)
+					);
+				}
 			} catch (error) {
 				console.log(error);
 			}
 		};
 
-		fetchData();
+		fetchUserData();
 	}, []);
 
 	return (
@@ -52,7 +73,7 @@ const FriendList = () => {
 					<Typography fontWeight={700}>Following</Typography>
 				</Box>
 				{/* FRIENDS */}
-				{users.map((user, index) => (
+				{followingProfiles.map((user, index) => (
 					<Box
 						sx={{ p: 2, display: 'flex' }}
 						justifyContent={'space-between'}
@@ -87,9 +108,7 @@ const FriendList = () => {
 							direction={'row'}
 							spacing={0.5}
 							justifyContent={'flex-end'}>
-							<GroupRemoveIcon
-								onClick={() => handleRemoveFriend(user._id)}
-							/>
+							<GroupRemoveIcon />
 						</Stack>
 					</Box>
 				))}
