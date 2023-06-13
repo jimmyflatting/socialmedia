@@ -5,12 +5,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import Modal from '@mui/material/Modal';
 import ProfileCard from './ProfileCard';
 
-const SettingsComponent = () => {
+const SettingsComponent = ({ user, token }) => {
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 	const [userHandle, setUserHandle] = useState('');
-	const [users, setUser] = useState([]);
+	const [results, setResults] = useState([]);
 
 	const handleInputChangeUserHandle = (e) => {
 		setUserHandle(e.target.value);
@@ -21,13 +21,13 @@ const SettingsComponent = () => {
 			try {
 				if (userHandle !== '') {
 					const response = await fetch(
-						`http://localhost:3001/users/profile/${userHandle}`
+						`http://localhost:3001/users/${userHandle}`
 					);
 					const userData = await response.json();
 					console.log(userData);
-					setUser(userData);
+					setResults(userData);
 				} else {
-					setUser([]);
+					setResults([]);
 				}
 			} catch (error) {
 				console.log(error);
@@ -103,7 +103,11 @@ const SettingsComponent = () => {
 							</div>
 						</Stack>
 					</Box>
-					<ProfileCard user={users} />
+					<ProfileCard
+						results={results}
+						user={user}
+						token={token}
+					/>
 				</Card>
 			</Modal>
 		</>

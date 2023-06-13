@@ -5,7 +5,7 @@ import LogoutComponent from './LogoutComponent';
 import SettingsComponent from './SettingsComponent';
 import SearchComponent from './SearchComponent';
 
-const Header = () => {
+const Header = ({ user, token }) => {
 	return (
 		<header className=''>
 			<Navbar expand='lg'>
@@ -21,8 +21,14 @@ const Header = () => {
 						id='basic-navbar-nav'
 						className='justify-content-end'>
 						<Nav className=''>
-							<SearchComponent />
-							<SettingsComponent />
+							<SearchComponent
+								user={user}
+								token={token}
+							/>
+							<SettingsComponent
+								user={user}
+								token={token}
+							/>
 							<LogoutComponent />
 						</Nav>
 					</Navbar>

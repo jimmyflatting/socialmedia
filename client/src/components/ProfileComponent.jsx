@@ -1,71 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Box, Avatar, Stack, Typography, Divider } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WorkIcon from '@mui/icons-material/Work';
 import { grey } from '@mui/material/colors';
 
-const ProfileComponent = () => {
-	const [userData, setUserData] = useState(null);
-
-	const getToken = () => {
-		const token = localStorage.getItem('token');
-		//console.log(token);
-		return token;
-	};
-	const getEmail = () => {
-		const email = localStorage.getItem('email');
-		// console.log(email);
-		return email;
-	};
-
-	useEffect(() => {
-		const fetchUserData = async () => {
-			try {
-				const response = await fetch(
-					'http://localhost:3001/users/profile/',
-					{
-						headers: {
-							Authorization: `Bearer ${getToken()}`,
-							Profile: `${getEmail()}`,
-						},
-					}
-				);
-				const data = await response.json();
-				//console.log(data);
-				setUserData(data);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-
-		fetchUserData();
-	}, []);
-
-	if (!userData) {
-		return <div>Loading...</div>;
-	}
-
+const ProfileComponent = ({ user }) => {
 	return (
 		<>
 			<Card
 				elevation={4}
 				className='mb-3'>
 				<Box sx={{ p: 2, display: 'flex' }}>
-					<Link to={`/profile/${userData.userHandle}`}>
+					<Link to={`/profile/${user.userHandle}`}>
 						<Avatar
 							variant='rounded'
 							width='64px'
 							sx={{ width: 64, height: 64 }}
-							src={userData.profileImg}
+							src={user.profileImg}
 						/>
 					</Link>
 					<Stack spacing={0.5}>
-						<Link to={`/profile/${userData.userHandle}`}>
+						<Link to={`/profile/${user.userHandle}`}>
 							<Typography
 								sx={{ px: 1 }}
 								fontWeight={700}>
-								{userData.firstName} {userData.lastName}
+								{user.firstName} {user.lastName}
 							</Typography>
 						</Link>
 						<Typography
@@ -73,7 +33,7 @@ const ProfileComponent = () => {
 							sx={{ px: 1, color: grey[500] }}
 							fontSize={14}
 							fontWeight={200}>
-							@{userData.userHandle}
+							@{user.userHandle}
 						</Typography>
 					</Stack>
 				</Box>
@@ -91,13 +51,12 @@ const ProfileComponent = () => {
 						variant='body2'
 						color='text.secondary'>
 						<LocationOnIcon sx={{ color: grey[500] }} />{' '}
-						{userData.location}
+						{user.location}
 					</Typography>
 					<Typography
 						variant='body2'
 						color='text.secondary'>
-						<WorkIcon sx={{ color: grey[500] }} />{' '}
-						{userData.workplace}
+						<WorkIcon sx={{ color: grey[500] }} /> {user.workplace}
 					</Typography>
 				</Stack>
 			</Card>

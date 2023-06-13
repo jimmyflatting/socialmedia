@@ -5,7 +5,7 @@ import { Card, Box, Avatar, Stack, Typography, Divider } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const FeedComponent = () => {
+const FeedComponent = ({ user }) => {
 	const [posts, setPosts] = useState([]);
 
 	const getToken = () => {
@@ -65,6 +65,7 @@ const FeedComponent = () => {
 								variant='rounded'
 								width='64px'
 								sx={{ width: 64, height: 64 }}
+								src={user.profileImg}
 							/>
 							<Stack spacing={0.5}>
 								<Typography

@@ -6,38 +6,30 @@ import Header from '../components/Header';
 
 const Feed = () => {
 	const [userData, setUserData] = useState(null);
+	const [token, setToken] = useState(null);
 
 	const getToken = () => {
 		const token = localStorage.getItem('token');
 		// console.log(token);
 		return token;
 	};
-	const getEmail = () => {
-		const email = localStorage.getItem('email');
-		// console.log(email);
-		return email;
-	};
 
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
-				const response = await fetch(
-					'http://localhost:3001/users/profile/',
-					{
-						headers: {
-							Authorization: `Bearer ${getToken()}`,
-							Profile: `${getEmail()}`,
-						},
-					}
-				);
+				const response = await fetch(`http://localhost:3001/users/`, {
+					headers: {
+						Authorization: `Bearer ${getToken()}`,
+					},
+				});
 				const data = await response.json();
-				//console.log(data);
+				// console.log(data);
 				setUserData(data);
 			} catch (error) {
 				console.log(error);
 			}
 		};
-
+		setToken(getToken());
 		fetchUserData();
 	}, []);
 
@@ -46,17 +38,23 @@ const Feed = () => {
 	}
 	return (
 		<>
-			<Header userHandle={userData.userHandle} />
+			<Header
+				user={userData}
+				token={token}
+			/>
 			<div className='container'>
 				<div className='row'>
 					<div className='col-12 col-xl-3'>
-						<ProfileComponent />
+						<ProfileComponent user={userData} />
 					</div>
 					<div className='col-12 col-xl-6'>
-						{/* <FeedComponent /> */}
+						<FeedComponent user={userData} />
 					</div>
 					<div className='col-3 d-none d-xl-block'>
-						<FriendList />
+						<FriendList
+							user={userData}
+							token={token}
+						/>
 					</div>
 				</div>
 			</div>

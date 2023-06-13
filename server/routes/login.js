@@ -25,8 +25,10 @@ router.post('/', async (req, res) => {
 			);
 
 			user.token = token;
+			userHandle = user.userHandle;
 
 			res.cookie('token', token, { httpOnly: true });
+			res.cookie('userHandle', userHandle, { httpOnly: true });
 			res.status(200).json(user);
 		}
 		res.status(400).json('Invalid Credentials');

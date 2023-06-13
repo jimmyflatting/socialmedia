@@ -5,25 +5,14 @@ import { grey } from '@mui/material/colors';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
 
-const FriendList = () => {
-	const [userData, setUserData] = useState(null);
+const FriendList = ({ user, token }) => {
 	const [followingProfiles, setFollowingProfiles] = useState([]);
 	const [isFriend, setIsFriend] = useState(null);
-
-	const getToken = () => {
-		const token = localStorage.getItem('token');
-		return token;
-	};
-
-	const getEmail = () => {
-		const email = localStorage.getItem('email');
-		return email;
-	};
 
 	const fetchUserProfile = async (userHandle) => {
 		try {
 			const response = await fetch(
-				`http://localhost:3001/users/profile/${userHandle}`
+				`http://localhost:3001/users/${userHandle}`
 			);
 			const data = await response.json();
 			return data;
@@ -36,21 +25,9 @@ const FriendList = () => {
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
-				const response = await fetch(
-					'http://localhost:3001/users/profile/',
-					{
-						headers: {
-							Authorization: `Bearer ${getToken()}`,
-							Profile: `${getEmail()}`,
-						},
-					}
-				);
-				const data = await response.json();
-				setUserData(data);
-
-				if (data && data.following.length > 0) {
+				if (user && user.following.length > 0) {
 					const profiles = await Promise.all(
-						data.following.map((userHandle) =>
+						user.following.map((userHandle) =>
 							fetchUserProfile(userHandle)
 						)
 					);
@@ -66,8 +43,6 @@ const FriendList = () => {
 		fetchUserData();
 	}, []);
 
-	console.log(followingProfiles);
-
 	const handleRemoveFriend = async (e, index) => {
 		e.preventDefault();
 		const profile = followingProfiles[index];
@@ -78,7 +53,7 @@ const FriendList = () => {
 					method: 'PUT',
 					headers: {
 						'Content-Type': 'application/json',
-						Authorization: `Bearer ${getToken()}`,
+						Authorization: `Bearer ${token}`,
 					},
 					body: JSON.stringify({
 						action: 'remove',
@@ -106,7 +81,7 @@ const FriendList = () => {
 					method: 'PUT',
 					headers: {
 						'Content-Type': 'application/json',
-						Authorization: `Bearer ${getToken()}`,
+						Authorization: `Bearer ${token}`,
 					},
 					body: JSON.stringify({
 						action: 'add',
@@ -127,17 +102,19 @@ const FriendList = () => {
 	useEffect(() => {
 		const friendChecker = async () => {
 			if (
-				userData &&
-				userData.following.includes(followingProfiles.userHandle)
+				user &&
+				followingProfiles.some(
+					(profile) => profile.userHandle === user.userHandle
+				)
 			) {
-				setIsFriend(false);
-			} else {
 				setIsFriend(true);
+			} else {
+				setIsFriend(false);
 			}
 		};
 
 		friendChecker();
-	}, [userData, followingProfiles.userHandle]);
+	}, [user, followingProfiles]);
 
 	return (
 		<>
