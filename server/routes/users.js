@@ -116,6 +116,7 @@ router.get('/profile/:author', async (req, res) => {
 				email: user.email,
 				userHandle: user.userHandle,
 				posts: user.posts,
+				profileImg: user.profileImg,
 			});
 		} else {
 			res.status(404).json({

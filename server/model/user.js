@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema({
 	password: { type: String },
 	posts: { type: Array },
 	token: { type: String },
+	followers: { type: Array },
+	following: { type: Array },
 });
 
 module.exports = mongoose.model('user', userSchema);

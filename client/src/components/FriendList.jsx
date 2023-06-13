@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, Box, Typography, Avatar, Stack } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
@@ -7,14 +8,34 @@ import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 const FriendList = () => {
 	const [users, setUsers] = useState([]);
 
+	const getToken = () => {
+		const token = localStorage.getItem('token');
+		return token;
+	};
+
+	const handleRemoveFriend = async (userId) => {
+		try {
+			await fetch(`http://localhost:3001/users/${userId}/followers`, {
+				method: 'PUT',
+				headers: {
+					Authorization: `Bearer ${getToken()}`,
+				},
+			});
+			// console.log('Response status:', response.status);
+			// const data = await response.text();
+			// console.log('Response data:', data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const response = await fetch('http://localhost:3001/users/');
 				const data = await response.json();
-				// console.log(data);
+				console.log(data);
 
-				// Perform any necessary data manipulation here before updating the state
 				setUsers(data);
 			} catch (error) {
 				console.log(error);
@@ -28,41 +49,48 @@ const FriendList = () => {
 		<>
 			<Card elevation={4}>
 				<Box sx={{ p: 2, display: 'flex' }}>
-					<Typography fontWeight={700}>Friend list</Typography>
+					<Typography fontWeight={700}>Following</Typography>
 				</Box>
-				{/* FRIEND ONE */}
+				{/* FRIENDS */}
 				{users.map((user, index) => (
 					<Box
 						sx={{ p: 2, display: 'flex' }}
+						justifyContent={'space-between'}
 						key={index}>
-						<Avatar
-							variant='rounded'
-							width='64px'
-							sx={{ width: 64, height: 64 }}
-							src={
-								user.userPicture
-									? user.userPicture
-									: 'avatar1.jpg'
-							}
-						/>
-						<Stack spacing={0.5}>
-							<Typography
-								sx={{ px: 1 }}
-								fontWeight={700}>
-								{user.firstName} {user.lastName}
-							</Typography>
-							<Typography
-								className='profileHandle'
-								sx={{ px: 1, color: grey[500] }}
-								fontSize={14}
-								fontWeight={200}>
-								@
-								{user.userHandle
-									? user.userHandle
-									: user.firstName}
-							</Typography>
+						<Stack
+							spacing={0.5}
+							direction={'row'}>
+							<Avatar
+								variant='rounded'
+								width='64px'
+								sx={{ width: 64, height: 64 }}
+								src={user.profileImg}
+							/>
+							<Stack spacing={0.5}>
+								<Typography
+									sx={{ px: 1 }}
+									fontWeight={700}>
+									<Link to={`/profile/${user.userHandle}`}>
+										{user.firstName} {user.lastName}
+									</Link>
+								</Typography>
+								<Typography
+									className='profileHandle'
+									sx={{ px: 1, color: grey[500] }}
+									fontSize={14}
+									fontWeight={200}>
+									@{user.userHandle}
+								</Typography>
+							</Stack>
 						</Stack>
-						<GroupAddIcon sx={{ width: 30, height: 30 }} />
+						<Stack
+							direction={'row'}
+							spacing={0.5}
+							justifyContent={'flex-end'}>
+							<GroupRemoveIcon
+								onClick={() => handleRemoveFriend(user._id)}
+							/>
+						</Stack>
 					</Box>
 				))}
 			</Card>

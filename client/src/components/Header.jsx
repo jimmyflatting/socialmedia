@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import LogoutComponent from './LogoutComponent';
 import SettingsComponent from './SettingsComponent';
+import SearchComponent from './SearchComponent';
 
-const Header = ({ userHandle }) => {
+const Header = () => {
 	return (
 		<header className=''>
 			<Navbar expand='lg'>
@@ -20,7 +21,8 @@ const Header = ({ userHandle }) => {
 						id='basic-navbar-nav'
 						className='justify-content-end'>
 						<Nav className=''>
-							<SettingsComponent userHandleData={userHandle} />
+							<SearchComponent />
+							<SettingsComponent />
 							<LogoutComponent />
 						</Nav>
 					</Navbar>

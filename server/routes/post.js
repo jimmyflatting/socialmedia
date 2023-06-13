@@ -97,6 +97,25 @@ router.get('/:postId', async (req, res) => {
 	}
 });
 
+// Delete post by Id
+router.delete('/:postId', async (req, res) => {
+	try {
+		const postId = req.params.postId;
+		const post = await Post.deleteOne({ _id: postId });
+
+		if (post) {
+			res.status(200).json(post);
+		} else {
+			res.status(404).json({
+				message: 'Post not found',
+			});
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Server error', error: error });
+	}
+});
+
 // Fetch all posts
 router.get('/', async (req, res) => {
 	try {
