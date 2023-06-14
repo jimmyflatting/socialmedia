@@ -78,6 +78,7 @@ const ProfileCard = ({ user, token, results }) => {
 		<>
 			{user !== '' && results.userHandle ? (
 				<Box
+					className='bg-catGrey'
 					sx={{ p: 2, display: 'flex' }}
 					justifyContent={'space-between'}>
 					<Stack

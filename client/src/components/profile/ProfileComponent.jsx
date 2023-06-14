@@ -10,7 +10,7 @@ const ProfileComponent = ({ user }) => {
 		<>
 			<Card
 				elevation={4}
-				className='mb-3'>
+				className='mb-3 bg-catGrey'>
 				<Box sx={{ p: 2, display: 'flex' }}>
 					<Link to={`/profile/${user.userHandle}`}>
 						<Avatar
@@ -45,7 +45,6 @@ const ProfileComponent = ({ user }) => {
 					sx={{
 						px: 2,
 						py: 1,
-						bgcolor: 'background.default',
 					}}>
 					<Typography
 						variant='body2'

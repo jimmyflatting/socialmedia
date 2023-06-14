@@ -33,7 +33,7 @@ const UserProfileComponent = () => {
 		<>
 			<Card
 				elevation={4}
-				className='mb-3'>
+				className='mb-3 bg-catGrey'>
 				<Box sx={{ p: 2, display: 'flex' }}>
 					<Link to='/'>
 						<Avatar

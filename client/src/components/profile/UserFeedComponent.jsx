@@ -33,7 +33,7 @@ const UserFeedComponent = () => {
 			{/* POSTS LOOP */}
 			{[...posts].reverse().map((post, index) => (
 				<Card
-					className='mb-3'
+					className='mb-3 bg-catGrey'
 					elevation={4}
 					key={index}>
 					<Box sx={{ p: 2, display: 'flex' }}>

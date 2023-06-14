@@ -78,7 +78,7 @@ const NewPost = () => {
 		<form onSubmit={handleSubmit}>
 			<Card
 				elevation={4}
-				className='mb-3'>
+				className='mb-3 bg-catGrey'>
 				<Box sx={{ p: 2 }}>
 					<TextField
 						id='outlined-multiline-static'
@@ -116,9 +116,14 @@ const NewPost = () => {
 							{fileName && <span>{fileName}</span>}
 						</Stack>
 						<Button
+							className='color-catRed'
 							variant='outlined'
 							type='submit'>
-							Create post <SendIcon sx={{ ml: 1 }} />
+							Create post{' '}
+							<SendIcon
+								className='color-catRed'
+								sx={{ ml: 1 }}
+							/>
 						</Button>
 					</Stack>
 				</Box>

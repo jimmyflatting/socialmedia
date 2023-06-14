@@ -38,11 +38,11 @@ const Feed = () => {
 	}
 	return (
 		<>
-			<Header
-				user={userData}
-				token={token}
-			/>
 			<div className='container'>
+				<Header
+					user={userData}
+					token={token}
+				/>
 				<div className='row'>
 					<div className='col-12 col-xl-3'>
 						<ProfileComponent user={userData} />

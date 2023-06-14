@@ -1,40 +1,46 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Card, Box, Avatar, Stack, Badge } from '@mui/material';
+import Logo from '../../assets/img/logo.png';
+import AvatarMenu from './AvatarMenu';
 import LogoutComponent from './LogoutComponent';
 import SettingsComponent from './SettingsComponent';
 import SearchComponent from './SearchComponent';
 
 const Header = ({ user, token }) => {
 	return (
-		<header className=''>
-			<Navbar expand='lg'>
-				<Container>
-					<Link
-						to='/'
-						className='navbar-brand d-flex'>
-						<Navbar.Brand className=''>
-							<h4 className='m-0'>SocialMedia</h4>
-						</Navbar.Brand>
-					</Link>
-					<Navbar
-						id='basic-navbar-nav'
-						className='justify-content-end'>
-						<Nav className=''>
-							<SearchComponent
-								user={user}
-								token={token}
-							/>
-							<SettingsComponent
-								user={user}
-								token={token}
-							/>
-							<LogoutComponent />
-						</Nav>
-					</Navbar>
-				</Container>
-			</Navbar>
-		</header>
+		<Card
+			className='my-3 bg-catGrey'
+			elevation={4}>
+			<Box
+				sx={{ p: 2, display: 'flex' }}
+				justifyContent={'space-between'}>
+				<Stack
+					spacing={0.5}
+					direction={'row'}>
+					<Avatar
+						variant='square'
+						sx={{ width: '100%', height: 64 }}
+						src={Logo}
+					/>
+				</Stack>
+				<Stack
+					className='my-auto'
+					direction={'row'}
+					spacing={0.5}
+					justifyContent={'flex-end'}>
+					<Badge
+						color='secondary'
+						badgeContent='↓'
+						anchorOrigin={{
+							vertical: 'bottom',
+							horizontal: 'right',
+						}}>
+						<AvatarMenu user={user} />
+					</Badge>
+				</Stack>
+			</Box>
+		</Card>
 	);
 };
 

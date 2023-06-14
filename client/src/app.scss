@@ -1,5 +1,15 @@
-/* BOOTSTRAP */
+/* IMPORTS */
+@import './assets/scss/variables.scss';
 @import 'bootstrap/dist/css/bootstrap.min.css';
+@import './assets/scss/reset.scss';
+
+.bg-catGrey {
+	background-color: $catGrey !important;
+}
+
+.color-catRed {
+	color: $catRed !important;
+}
 
 .profileHandle {
 	margin-top: -5px !important;

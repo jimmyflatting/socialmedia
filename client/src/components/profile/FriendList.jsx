@@ -118,7 +118,9 @@ const FriendList = ({ user, token }) => {
 
 	return (
 		<>
-			<Card elevation={4}>
+			<Card
+				elevation={4}
+				className='bg-catGrey'>
 				<Box sx={{ p: 2, display: 'flex' }}>
 					<Typography fontWeight={700}>Following</Typography>
 				</Box>
