@@ -22,7 +22,6 @@ app.use(
 			'https://socialmedia-frontend-zeta.vercel.app',
 		],
 		credentials: true,
-		Access-Control-Allow-Credentials: true
 	})
 );
 
@@ -39,5 +38,10 @@ app.use('/login', login);
 app.use('/posts', posts);
 app.use('/users', users);
 app.use('/profile', profile);
+
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Credentials', 'true');
+	next();
+});
 
 module.exports = app;
