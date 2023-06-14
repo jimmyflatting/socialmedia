@@ -14,13 +14,12 @@ const session = require('./routes/session');
 const users = require('./routes/users');
 const profile = require('./routes/profile');
 
-app.use(cors());
 app.use(express.json());
 app.use(
 	cors({
 		origin: [
-			'http://localhost:3000/',
-			'https://socialmedia-frontend-zeta.vercel.app/',
+			'http://localhost:3000',
+			'https://socialmedia-frontend-zeta.vercel.app',
 		],
 		credentials: true,
 	})
