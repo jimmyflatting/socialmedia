@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Box, Stack, Button, Typography } from '@mui/material';
+import { Card, Box, Stack, Typography } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
 import Modal from '@mui/material/Modal';
-import ProfileCard from './ProfileCard';
+import ProfileCard from '../profile/ProfileCard';
 
 const SettingsComponent = ({ user, token }) => {
 	const [open, setOpen] = useState(false);

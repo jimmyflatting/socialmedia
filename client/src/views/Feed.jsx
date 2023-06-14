@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import FeedComponent from '../components/FeedComponent';
-import ProfileComponent from '../components/ProfileComponent';
-import FriendList from '../components/FriendList';
-import Header from '../components/Header';
+import FeedComponent from '../components/feed/FeedComponent';
+import ProfileComponent from '../components/profile/ProfileComponent';
+import FriendList from '../components/profile/FriendList';
+import Header from '../components/navigation/Header';
 
 const Feed = () => {
 	const [userData, setUserData] = useState(null);

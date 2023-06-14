@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import NewPost from './NewPost';
+import NewPost from '../feed/NewPost';
 import { Card, Box, Avatar, Stack, Typography, Divider } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
