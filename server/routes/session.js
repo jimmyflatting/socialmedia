@@ -5,9 +5,11 @@ const jwt = require('jsonwebtoken');
 router.get('/', (req, res) => {
 	const token = req.cookies.token;
 	if (token) {
+		console.log('Token:', token);
 		jwt.verify(token, process.env.TOKEN_KEY, (err) => {
 			if (err) {
-				res.sendStatus(401);
+				console.log('Verification Error:', err);
+				res.status(401).json({ message: err });
 			} else {
 				res.sendStatus(200);
 			}
