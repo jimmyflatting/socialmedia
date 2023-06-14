@@ -4,6 +4,8 @@ import { Card, Box, Avatar, Stack, Typography, Divider } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WorkIcon from '@mui/icons-material/Work';
 import { grey } from '@mui/material/colors';
+import { config } from '../../utils/config';
+const apiUrl = config.API_BASE_URL;
 
 const UserProfileComponent = () => {
 	const [userData, setProfile] = useState([]);
@@ -13,7 +15,7 @@ const UserProfileComponent = () => {
 			const userHandle = window.location.pathname.split('/').pop();
 
 			try {
-				const url = `http://localhost:3001/users/profile/${userHandle}`;
+				const url = `${apiUrl}users/profile/${userHandle}`;
 				const response = await fetch(url);
 				const userData = await response.json();
 				setProfile(userData);

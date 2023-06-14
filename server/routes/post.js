@@ -31,17 +31,21 @@ router.post('/create', upload.single('imgSrc'), async (req, res) => {
 			return;
 		}
 
-		const fileStream = Readable.from(req.file.buffer);
+		let imgSrc = null;
 
-		// Upload the file to S3
-		const s3Params = {
-			Bucket: process.env.S3_bucketName,
-			Key: `${Date.now()}-${req.file.originalname}`,
-			Body: fileStream,
-		};
+		if (req.file) {
+			const fileStream = Readable.from(req.file.buffer);
 
-		const s3UploadResponse = await s3Client.upload(s3Params).promise();
-		const imgSrc = s3UploadResponse.Location;
+			// Upload the file to S3
+			const s3Params = {
+				Bucket: process.env.S3_bucketName,
+				Key: `${Date.now()}-${req.file.originalname}`,
+				Body: fileStream,
+			};
+
+			const s3UploadResponse = await s3Client.upload(s3Params).promise();
+			imgSrc = s3UploadResponse.Location;
+		}
 
 		const post = await Post.create({
 			content,

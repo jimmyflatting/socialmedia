@@ -4,6 +4,8 @@ import Login from './views/Login';
 import Feed from './views/Feed';
 import Register from './views/Register';
 import Profile from './views/Profile';
+import { config } from './utils/config';
+const apiUrl = config.API_BASE_URL;
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,13 +13,10 @@ function App() {
 	useEffect(() => {
 		const getSession = async () => {
 			try {
-				const response = await fetch(
-					'http://localhost:3001/check-session',
-					{
-						method: 'GET',
-						credentials: 'include',
-					}
-				);
+				const response = await fetch(`${apiUrl}check-session`, {
+					method: 'GET',
+					credentials: 'include',
+				});
 				if (response.ok) {
 					setIsLoggedIn(true);
 				}

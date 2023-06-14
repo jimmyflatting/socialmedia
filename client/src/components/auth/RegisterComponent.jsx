@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { Card, Stack, Button, Typography } from '@mui/material';
 import { grey, red } from '@mui/material/colors';
+import { config } from '../../utils/config';
+const apiUrl = config.API_BASE_URL;
 
 const RegisterComponent = () => {
 	const [firstName, setFirstName] = useState('');
@@ -37,16 +39,13 @@ const RegisterComponent = () => {
 		const fetchData = async () => {
 			if (passwordCheck === password) {
 				try {
-					const response = await fetch(
-						'http://localhost:3001/register/',
-						{
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(postData),
-						}
-					);
+					const response = await fetch(`${apiUrl}egister/`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(postData),
+					});
 
 					if (!response.ok) {
 						throw new Error('Failed to create user');

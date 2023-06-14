@@ -4,6 +4,8 @@ import { Card, Box, Typography, Avatar, Stack } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
+import { config } from '../../utils/config';
+const apiUrl = config.API_BASE_URL;
 
 const FriendList = ({ user, token }) => {
 	const [followingProfiles, setFollowingProfiles] = useState([]);
@@ -11,9 +13,7 @@ const FriendList = ({ user, token }) => {
 
 	const fetchUserProfile = async (userHandle) => {
 		try {
-			const response = await fetch(
-				`http://localhost:3001/users/${userHandle}`
-			);
+			const response = await fetch(`${apiUrl}users/${userHandle}`);
 			const data = await response.json();
 			return data;
 		} catch (error) {
@@ -48,7 +48,7 @@ const FriendList = ({ user, token }) => {
 		const profile = followingProfiles[index];
 		try {
 			const response = await fetch(
-				`http://localhost:3001/profile/friends/${user.userHandle}`,
+				`${apiUrl}profile/friends/${user.userHandle}`,
 				{
 					method: 'PUT',
 					headers: {
@@ -76,7 +76,7 @@ const FriendList = ({ user, token }) => {
 		const profile = followingProfiles[index];
 		try {
 			const response = await fetch(
-				`http://localhost:3001/profile/friends/${user.userHandle}`,
+				`${apiUrl}profile/friends/${user.userHandle}`,
 				{
 					method: 'PUT',
 					headers: {

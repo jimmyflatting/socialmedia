@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import NewPost from '../feed/NewPost';
 import { Card, Box, Avatar, Stack, Typography, Divider } from '@mui/material';
 import { grey } from '@mui/material/colors';
+import { config } from '../../utils/config';
+const apiUrl = config.API_BASE_URL;
 
 const UserFeedComponent = () => {
 	const [posts, setPosts] = useState([]);
@@ -12,7 +14,7 @@ const UserFeedComponent = () => {
 			try {
 				const userHandle = window.location.pathname.split('/').pop();
 
-				const url = `http://localhost:3001/posts/${userHandle}`;
+				const url = `${apiUrl}posts/${userHandle}`;
 				const response = await fetch(url);
 				const postsData = await response.json();
 				// console.log(postsData);

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { Card, Stack, Button, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
+import { config } from '../../utils/config';
+const apiUrl = config.API_BASE_URL;
 
 const LoginComponent = () => {
 	const [email, setEmail] = useState('');
@@ -20,7 +22,7 @@ const LoginComponent = () => {
 
 		const fetchData = async () => {
 			try {
-				const response = await fetch('http://localhost:3001/login/', {
+				const response = await fetch(`${apiUrl}login/`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',

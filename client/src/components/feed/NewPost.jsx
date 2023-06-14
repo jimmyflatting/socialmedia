@@ -4,6 +4,8 @@ import TextField from '@mui/material/TextField';
 import { Card, Stack, Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { config } from '../../utils/config';
+const apiUrl = config.API_BASE_URL;
 
 const NewPost = () => {
 	const getToken = () => {
@@ -54,7 +56,7 @@ const NewPost = () => {
 		formData.append('imgSrc', file);
 
 		try {
-			const response = await fetch('http://localhost:3001/posts/create', {
+			const response = await fetch(`${apiUrl}posts/create`, {
 				method: 'POST',
 				headers: {
 					Authorization: `Bearer ${getToken()}`,

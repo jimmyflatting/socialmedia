@@ -4,6 +4,8 @@ import { Box, Avatar, Stack, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
+import { config } from '../../utils/config';
+const apiUrl = config.API_BASE_URL;
 
 const ProfileCard = ({ user, token, results }) => {
 	const [isFriend, setIsFriend] = useState(null);
@@ -12,7 +14,7 @@ const ProfileCard = ({ user, token, results }) => {
 		e.preventDefault();
 		try {
 			const response = await fetch(
-				`http://localhost:3001/profile/friends/${user.userHandle}`,
+				`${apiUrl}profile/friends/${user.userHandle}`,
 				{
 					method: 'PUT',
 					headers: {
@@ -39,7 +41,7 @@ const ProfileCard = ({ user, token, results }) => {
 		e.preventDefault();
 		try {
 			const response = await fetch(
-				`http://localhost:3001/profile/friends/${user.userHandle}`,
+				`${apiUrl}profile/friends/${user.userHandle}`,
 				{
 					method: 'PUT',
 					headers: {

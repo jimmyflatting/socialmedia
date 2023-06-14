@@ -4,6 +4,8 @@ import NewPost from './NewPost';
 import { Card, Box, Avatar, Stack, Typography, Divider } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { config } from '../../utils/config';
+const apiUrl = config.API_BASE_URL;
 
 const FeedComponent = ({ user }) => {
 	const [posts, setPosts] = useState([]);
@@ -15,7 +17,7 @@ const FeedComponent = ({ user }) => {
 
 	const handleDelete = async (postId) => {
 		try {
-			await fetch(`http://localhost:3001/posts/${postId}`, {
+			await fetch(`${apiUrl}posts/${postId}`, {
 				method: 'DELETE',
 				headers: {
 					Authorization: `Bearer ${getToken()}`,
@@ -32,7 +34,7 @@ const FeedComponent = ({ user }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await fetch('http://localhost:3001/posts/');
+				const response = await fetch(`${apiUrl}posts/`);
 				const postsData = await response.json();
 				//console.log(postsData);
 

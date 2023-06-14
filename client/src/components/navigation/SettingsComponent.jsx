@@ -3,6 +3,8 @@ import { Card, Box, Stack, Button, Typography } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Modal from '@mui/material/Modal';
+import { config } from '../../utils/config';
+const apiUrl = config.API_BASE_URL;
 
 const SettingsComponent = ({ user, token }) => {
 	const [open, setOpen] = useState(false);
@@ -64,7 +66,7 @@ const SettingsComponent = ({ user, token }) => {
 				formData.append('profileImage', image);
 
 				const response = await fetch(
-					`http://localhost:3001/profile/${user.userHandle}`,
+					`${apiUrl}profile/${user.userHandle}`,
 					{
 						method: 'PUT',
 						headers: {

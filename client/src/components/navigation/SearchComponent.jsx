@@ -4,6 +4,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
 import Modal from '@mui/material/Modal';
 import ProfileCard from '../profile/ProfileCard';
+import { config } from '../../utils/config';
+const apiUrl = config.API_BASE_URL;
 
 const SettingsComponent = ({ user, token }) => {
 	const [open, setOpen] = useState(false);
@@ -21,7 +23,7 @@ const SettingsComponent = ({ user, token }) => {
 			try {
 				if (userHandle !== '') {
 					const response = await fetch(
-						`http://localhost:3001/users/${userHandle}`
+						`${apiUrl}users/${userHandle}`
 					);
 					const userData = await response.json();
 					console.log(userData);
