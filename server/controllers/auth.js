@@ -49,12 +49,10 @@ export const login = async (req, res) => {
 			expiresIn: '1d',
 		});
 		res.cookie('access_token', token, {
-			httpOnly: true,
-		})
-			.status(200)
-			.json({
-				userHandle: user.userHandle,
-			});
+			httpOnly: false,
+		}).json({
+			userHandle: user.userHandle,
+		});
 	} catch (err) {
 		res.status(500).json(err.message);
 	}

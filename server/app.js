@@ -26,11 +26,6 @@ app.use(
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Credentials', 'true');
-	next();
-});
-
 app.get('/', (req, res) => {
 	res.status(200).json({ message: 'This is message' });
 });

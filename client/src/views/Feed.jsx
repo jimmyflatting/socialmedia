@@ -8,21 +8,15 @@ const apiUrl = config.API_BASE_URL;
 
 const Feed = () => {
 	const [userData, setUserData] = useState(null);
-	const [token, setToken] = useState(null);
-
-	const getToken = () => {
-		const token = localStorage.getItem('token');
-		// console.log(token);
-		return token;
-	};
 
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
 				const response = await fetch(`${apiUrl}users/`, {
 					headers: {
-						Authorization: `Bearer ${getToken()}`,
+						'Content-Type': 'application/json',
 					},
+					credentials: 'include',
 				});
 				const data = await response.json();
 				// console.log(data);
@@ -31,7 +25,7 @@ const Feed = () => {
 				console.log(error);
 			}
 		};
-		setToken(getToken());
+
 		fetchUserData();
 	}, []);
 
@@ -41,10 +35,7 @@ const Feed = () => {
 	return (
 		<>
 			<div className='container'>
-				<Header
-					user={userData}
-					token={token}
-				/>
+				<Header user={userData} />
 				<div className='row'>
 					<div className='col-12 col-xl-3'>
 						<ProfileComponent user={userData} />
@@ -53,10 +44,7 @@ const Feed = () => {
 						<FeedComponent user={userData} />
 					</div>
 					<div className='col-3 d-none d-xl-block'>
-						<FriendList
-							user={userData}
-							token={token}
-						/>
+						<FriendList user={userData} />
 					</div>
 				</div>
 			</div>
