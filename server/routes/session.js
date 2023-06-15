@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 router.get('/', (req, res) => {
+	console.log('Received Cookies:', req.cookies);
 	const token = req.cookies.token;
 	console.log('Token:', token);
 	if (token) {
