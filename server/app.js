@@ -28,6 +28,11 @@ app.use(
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Credentials', 'true');
+	next();
+});
+
 app.get('/', (req, res) => {
 	res.status(200).json({ message: 'This is message' });
 });
@@ -38,10 +43,5 @@ app.use('/login', login);
 app.use('/posts', posts);
 app.use('/users', users);
 app.use('/profile', profile);
-
-app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Credentials', 'true');
-	next();
-});
 
 module.exports = app;

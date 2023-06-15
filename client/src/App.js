@@ -15,10 +15,14 @@ function App() {
 			.split('; ')
 			.find((row) => row.startsWith('token='))
 			?.split('=')[1];
-		return token ? `Token ${token}` : null;
+		return token ? `Bearer ${token}` : null;
 	};
 
 	useEffect(() => {
+		const token = getToken();
+		document.cookie = `token=${token}; Secure; SameSite=None;`;
+		console.log('Token:', document.cookie);
+
 		const getSession = async () => {
 			try {
 				const response = await fetch(`${apiUrl}check-session`, {
