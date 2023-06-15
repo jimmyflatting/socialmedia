@@ -10,12 +10,23 @@ const apiUrl = config.API_BASE_URL;
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+	const getToken = () => {
+		const token = document.cookie
+			.split('; ')
+			.find((row) => row.startsWith('token='))
+			?.split('=')[1];
+		return token;
+	};
+
 	useEffect(() => {
 		const getSession = async () => {
 			try {
 				const response = await fetch(`${apiUrl}check-session`, {
 					method: 'GET',
 					credentials: 'include',
+					headers: {
+						Authorization: `Bearer ${getToken()}`,
+					},
 				});
 				if (response.ok) {
 					setIsLoggedIn(true);
