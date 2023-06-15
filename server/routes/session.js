@@ -4,13 +4,13 @@ const jwt = require('jsonwebtoken');
 
 router.get('/', (req, res) => {
 	const token = req.cookies.token;
-	console.log('Token:', token); // Add this line to log the token value
+	console.log('Token:', token);
 	if (token) {
-		console.log('Before verification'); // Add this line to check the flow
+		console.log('Before verification');
 		jwt.verify(token, process.env.TOKEN_KEY, (err) => {
-			console.log('After verification'); // Add this line to check the flow
+			console.log('After verification');
 			if (err) {
-				console.log('Verification Error:', err); // Add this line to log the error
+				console.log('Verification Error:', err);
 				res.status(401).json({ message: err });
 			} else {
 				res.sendStatus(200);
