@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 	console.log('Token:', token);
 	if (token) {
 		console.log('Before verification');
-		jwt.verify(token, process.env.TOKEN_KEY, (err) => {
+		jwt.verify(token.split(' ')[1], process.env.TOKEN_KEY, (err) => {
 			console.log('After verification');
 			if (err) {
 				console.log('Verification Error:', err);

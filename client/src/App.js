@@ -15,7 +15,7 @@ function App() {
 			.split('; ')
 			.find((row) => row.startsWith('token='))
 			?.split('=')[1];
-		return token;
+		return token ? `Token ${token}` : null;
 	};
 
 	useEffect(() => {
@@ -25,7 +25,7 @@ function App() {
 					method: 'GET',
 					credentials: 'include',
 					headers: {
-						Authorization: `Bearer ${getToken()}`,
+						Authorization: getToken(),
 					},
 				});
 				if (response.ok) {
