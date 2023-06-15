@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const postSchema = new mongoose.Schema({
 	content: { type: String },
@@ -17,4 +17,6 @@ postSchema.methods.addToUserPosts = async function (userID) {
 	}
 };
 
-module.exports = mongoose.model('post', postSchema);
+const Post = mongoose.model('Post', postSchema);
+
+export { Post };

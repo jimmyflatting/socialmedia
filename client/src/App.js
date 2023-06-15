@@ -15,12 +15,12 @@ function App() {
 			.split('; ')
 			.find((row) => row.startsWith('token='))
 			?.split('=')[1];
-		return token ? `Bearer ${token}` : null;
+		return token ? `${token}` : null;
 	};
 
 	useEffect(() => {
 		const token = getToken();
-		document.cookie = `token=${token}; Secure; SameSite=None;`;
+		document.cookie = `token=${getToken()}; Secure; SameSite=None;`;
 		console.log('Token:', document.cookie);
 
 		const getSession = async () => {

@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const MONGO_DB = process.env.MONGO_DB;
 
-exports.connect = () => {
+const connect = () => {
 	mongoose
 		.connect(MONGO_DB, {
 			useNewUrlParser: true,
@@ -17,3 +17,5 @@ exports.connect = () => {
 			process.exit(1);
 		});
 };
+
+export { connect };
