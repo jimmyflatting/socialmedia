@@ -14,8 +14,6 @@ const session = require('./routes/session');
 const users = require('./routes/users');
 const profile = require('./routes/profile');
 
-console.log('TOKEN_KEY:', process.env.TOKEN_KEY);
-
 app.use(express.json());
 app.use(
 	cors({

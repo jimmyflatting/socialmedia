@@ -8,12 +8,11 @@ const apiUrl = config.API_BASE_URL;
 
 const Feed = () => {
 	const [userData, setUserData] = useState(null);
+	const [token, setToken] = useState(null);
 
 	const getToken = () => {
-		const token = document.cookie
-			.split('; ')
-			.find((row) => row.startsWith('token='))
-			?.split('=')[1];
+		const token = localStorage.getItem('token');
+		// console.log(token);
 		return token;
 	};
 
@@ -26,24 +25,25 @@ const Feed = () => {
 					},
 				});
 				const data = await response.json();
+				// console.log(data);
 				setUserData(data);
 			} catch (error) {
 				console.log(error);
 			}
 		};
+		setToken(getToken());
 		fetchUserData();
 	}, []);
 
 	if (!userData) {
 		return <div>Loading...</div>;
 	}
-
 	return (
 		<>
 			<div className='container'>
 				<Header
 					user={userData}
-					token={getToken()}
+					token={token}
 				/>
 				<div className='row'>
 					<div className='col-12 col-xl-3'>
@@ -55,7 +55,7 @@ const Feed = () => {
 					<div className='col-3 d-none d-xl-block'>
 						<FriendList
 							user={userData}
-							token={getToken()}
+							token={token}
 						/>
 					</div>
 				</div>
