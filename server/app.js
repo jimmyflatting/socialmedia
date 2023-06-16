@@ -13,20 +13,24 @@ import bodyParser from 'body-parser';
 const app = express();
 
 app.use(express.json());
-app.use(
-	cors({
-		origin: [
-			'http://localhost:3000',
-			'https://socialmedia-frontend-zeta.vercel.app',
-		],
-		credentials: true,
-	})
-);
+const corsOptions = {
+	origin: [
+		'http://localhost:3000',
+		'http://127.0.0.1',
+		'http://104.142.122.231',
+	],
+	credentials: true,
+	exposedHeaders: ['set-cookie'],
+};
+app.use(cors(corsOptions));
 
 app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
+	res.cookie('access_token', '123', {
+		httpOnly: true,
+	}).json({ message: 'Login successful' });
 	res.status(200).json({ message: 'This is message' });
 });
 

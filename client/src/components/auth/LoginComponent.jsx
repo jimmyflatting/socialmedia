@@ -27,26 +27,22 @@ const LoginComponent = () => {
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify(postData),
+					body: JSON.stringify({
+						email: email,
+						password: password,
+					}),
+					credentials: 'include',
 				});
 				const data = await response.json();
 				console.log(data);
-
-				window.location.href = '/';
 			} catch (error) {
 				console.log(error);
 			}
 		};
 
-		const postData = {
-			email: email,
-			password: password,
-		};
-
-		console.log('Loggin in:', postData);
-
 		fetchData();
 	};
+
 	return (
 		<>
 			<form onSubmit={handleSubmit}>
@@ -72,7 +68,7 @@ const LoginComponent = () => {
 										onChange={handleInputChangeEmail}
 									/>
 								</div>
-								<div className='col'>
+								<div className='col-12'>
 									<input
 										type='password'
 										className='form-control'

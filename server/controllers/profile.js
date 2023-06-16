@@ -2,7 +2,7 @@ import { User } from '../model/user.js';
 import { Readable } from 'stream';
 import { s3Client } from '../middleware/s3.js';
 
-// Add & Remove friends
+// Add and remove friends
 export const handleFriend = async (req, res) => {
 	try {
 		const { action, userId } = req.body;
