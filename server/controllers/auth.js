@@ -63,3 +63,20 @@ export const logout = (req, res) => {
 	res.clearCookie('access_token');
 	res.status(200).json('Logout success');
 };
+
+export const validate = (req, res) => {
+	const token = req.cookies.access_token;
+	if (!token) {
+		return res.status(401).json('No token found');
+	}
+
+	jwt.verify(token, process.env.TOKEN_KEY, (err, payload) => {
+		if (err) {
+			return res.status(403).json('Invalid Token');
+		}
+		req.user = {
+			id: payload.id,
+		};
+		res.status(200).json('Token validated');
+	});
+};
