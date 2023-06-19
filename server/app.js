@@ -28,9 +28,6 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-	res.cookie('access_token', '123', {
-		httpOnly: true,
-	}).json({ message: 'Login successful' });
 	res.status(200).json({ message: 'This is message' });
 });
 
