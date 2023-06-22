@@ -21,6 +21,10 @@ export const register = async (
 					req.body.profileImg,
 				userHandle:
 					req.body.userHandle,
+				firstName:
+					req.body.firstName,
+				lastName:
+					req.bodylastName,
 				email: req.body.email,
 				password:
 					hashedPassword,

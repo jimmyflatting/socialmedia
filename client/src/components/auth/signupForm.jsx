@@ -112,7 +112,7 @@ const SignupForm = () => {
 				const data =
 					await response.status;
 				console.log(data);
-				data === 202
+				data === 201
 					? navigate("/feed")
 					: (errorSpan.innerHTML =
 							"Username/email already registered");
@@ -138,7 +138,7 @@ const SignupForm = () => {
 						Avatar
 					</label>
 					<input
-						class="block w-full text-sm text-gray-800 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+						className="block w-full text-sm text-gray-800 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 						id="profileImg"
 						type="file"
 						onChange={
