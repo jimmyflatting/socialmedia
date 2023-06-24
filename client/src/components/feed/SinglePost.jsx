@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ModalImage from "react-modal-image";
 
 const SinglePost = ({ ...post }) => {
   if (!post || !post.author) {
@@ -38,10 +39,13 @@ const SinglePost = ({ ...post }) => {
             {post.content}
           </p>
           {post.imgSrc ? (
-            <img
+            <ModalImage
               className="rounded-3 img-fluid w-100"
               alt="post"
-              src={post.imgSrc}
+              small={post.imgSrc}
+              large={post.imgSrc}
+              hideDownload="true"
+              hideZoom="true"
             />
           ) : null}
         </div>
