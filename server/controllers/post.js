@@ -2,6 +2,7 @@ import { Post } from "../model/post.js";
 import { User } from "../model/user.js";
 import { Readable } from "stream";
 import { s3Client } from "../middleware/s3.js";
+import { upload } from "../middleware/upload.js";
 import jwt from "jsonwebtoken";
 
 // Create Post
@@ -40,16 +41,23 @@ export const createPost = async (req, res) => {
       const fileStream = Readable.from(req.file.buffer);
 
       // Upload the file to S3
-      const s3Params = {
+      const params = {
         Bucket: process.env.S3_bucketName,
         Key: `${Date.now()}-${req.file.originalname}`,
         Body: fileStream,
       };
 
-      const s3UploadResponse = await s3Client.upload(s3Params).promise();
-      imgSrc = s3UploadResponse.Location;
+      try {
+        const s3UploadResponse = await s3Client.upload(params).promise();
+        console.log(s3UploadResponse);
+        imgSrc = s3UploadResponse.Location;
+      } catch (error) {
+        console.log(error);
+        return res
+          .status(406)
+          .send("Something went wrong with image upload, try again later");
+      }
     }
-
     const post = await Post.create({
       content,
       author: user._id,

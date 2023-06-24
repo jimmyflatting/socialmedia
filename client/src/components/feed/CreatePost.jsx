@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { config } from "../../utils/config";
 const apiUrl = config.API_BASE_URL;
 
@@ -29,6 +29,7 @@ const CreatePost = () => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
     setFileName(selectedFile ? selectedFile.name : "");
+    console.log(fileName);
   };
 
   const handleSubmit = async (e) => {
@@ -60,7 +61,7 @@ const CreatePost = () => {
   return (
     <>
       <form className="card p-3 mb-3" onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="form-group mb- mb-2">
           <textarea
             className="form-control"
             id="postContent"
@@ -72,7 +73,16 @@ const CreatePost = () => {
             onBlur={handleTextFieldBlur}
           ></textarea>
         </div>
-        <button type="submit">Create post</button>
+        <div className="d-flex justify-content-between">
+          <input
+            className="form-control w-25"
+            type="file"
+            onChange={handleFileChange}
+          />
+          <button className="form-control w-25" type="submit">
+            Create post
+          </button>
+        </div>
       </form>
     </>
   );
