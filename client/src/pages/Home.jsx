@@ -13,17 +13,20 @@ const Home = () => {
 
   return (
     <>
-      <Header />
-      <div className="container mx-auto ">
-        <div className="flex-none md:flex-row">
-          <div className="flex-1 h-screen">
+      <div className="container mx-auto mt-5">
+        <div className="d-md-flex">
+          <div className="col-12 col-md-6 justify-content-center mx-auto mb-4">
+            <h1 className="">Hello, friend 👋</h1>
+            <p className="h3">The platform for developers, by developers.</p>
+          </div>
+          <div className="col-12 col-md-6 justify-content-center mx-auto">
             {formSelect ? <Login /> : <Signup />}
             {formSelect ? (
-              <p className="text-center text-gray-500 text-xs">
+              <p className="text-center">
                 Not registered? <Link onClick={handleClick}>Sign up</Link>
               </p>
             ) : (
-              <p className="text-center text-gray-500 text-xs">
+              <p className="text-center">
                 Already registered? <Link onClick={handleClick}>Login</Link>
               </p>
             )}
