@@ -60,26 +60,25 @@ const CreatePost = () => {
 
   return (
     <>
-      <form className="card p-3 mb-3" onSubmit={handleSubmit}>
-        <div className="form-group mb- mb-2">
-          <textarea
-            className="form-control"
-            id="postContent"
-            placeholder="What's on your mind?"
-            rows={rows}
-            value={message}
-            onChange={handleInputChange}
-            onFocus={handleTextFieldFocus}
-            onBlur={handleTextFieldBlur}
-          ></textarea>
-        </div>
-        <div className="d-flex justify-content-between">
+      <form className="card cardBg p-4 mb-4" onSubmit={handleSubmit}>
+        <textarea
+          className="form-control mb-4"
+          id="postContent"
+          placeholder="What's on your mind?"
+          rows={rows}
+          value={message}
+          onChange={handleInputChange}
+          onFocus={handleTextFieldFocus}
+          onBlur={handleTextFieldBlur}
+        ></textarea>
+        <div className="mb-2 cardBg d-md-flex">
           <input
-            className="form-control w-25"
+            className="form-control mb-2"
             type="file"
+            id="fileChange"
             onChange={handleFileChange}
           />
-          <button className="form-control w-25" type="submit">
+          <button className="form-control" type="submit">
             Create post
           </button>
         </div>
